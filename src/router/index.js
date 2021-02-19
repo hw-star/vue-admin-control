@@ -56,6 +56,35 @@ export const constantRoutes = [
   },
 
   {
+    path: '/manageusers',
+    component: Layout,
+    redirect: '/manageusers/table',
+    name: '用户管理',
+    meta: { title: '用户管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'table',
+        name: '用户列表',
+        component: () => import('@/views/manageusers/list'),
+        meta: { title: '用户列表', icon: 'table' }
+      },
+      {
+        path: 'save',
+        name: '添加用户',
+        component: () => import('@/views/manageusers/save'),
+        meta: { title: '添加用户', icon: 'tree' }
+      },
+      {
+        path: 'edit/:id',
+        name: '编辑用户',
+        component: () => import('@/views/manageusers/save'),
+        meta: { title: '编辑用户', noCache: 'true' },
+        hidden: true
+      }
+    ]
+  },
+
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',

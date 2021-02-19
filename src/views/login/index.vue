@@ -6,15 +6,15 @@
         <h3 class="title">Login Form</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="userid">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="userid"
+          v-model="loginForm.userid"
+          placeholder="UserId"
+          name="userid"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -59,26 +59,28 @@ export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+     /* if (!validUsername(value)) {
         callback(new Error('Please enter the correct user name'))
       } else {
         callback()
-      }
+      }*/
+      callback()
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
+      /*if (value.length < 6) {
         callback(new Error('The password can not be less than 6 digits'))
       } else {
         callback()
-      }
+      }*/
+      callback()
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        userid: '',
+        password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        userid: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,
