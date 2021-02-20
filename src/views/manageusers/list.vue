@@ -13,8 +13,8 @@
     <!--数据展示-->
     <el-table
       :data="list"
-      element-loading-text="数据加载中......"
-      style="width: 100%"
+      v-loading="loading"
+      style="width: 100%;height: 469.6px" 
     >
       <el-table-column label="序号" width="70" align="center">
         <template slot-scope="scope">
@@ -76,6 +76,7 @@ export default {
       list: null,
       total: 0,
       search: "",
+      loading: true
     };
   },
   created() {
@@ -89,6 +90,7 @@ export default {
         .then((response) => {
           this.list = response.data.userdata;
           this.total = response.data.total;
+          this.loading = false;
         });
     },
     handleEdit(index, row) {

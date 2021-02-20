@@ -1,0 +1,45 @@
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+button,
+textarea,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+a {
+    text-decoration: none;
+}
+body {
+    font-size: 16px;
+    outline-offset: 0;
+}
+input,
+button {
+    border: none;
+    outline: none;
+    outline-offset: 0;
+}
+button {
+    background: initial;
+    padding: 0;
+}
+li {
+    list-style: none;
+}

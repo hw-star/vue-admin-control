@@ -1,8 +1,8 @@
 {
-  "name": "vue-admin-template",
-  "version": "4.4.0",
-  "description": "A vue admin template with Element UI & axios & iconfont & permission control & lint",
-  "author": "Pan <panfree23@gmail.com>",
+  "name": "youngvolunteer",
+  "version": "1.1.0",
+  "description": "毕业设计 NUC",
+  "author": "3111314916@qq.com>",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build:prod": "vue-cli-service build",
@@ -57,6 +57,5 @@
   "engines": {
     "node": ">=8.9",
     "npm": ">= 3.0.0"
-  },
-  "license": "MIT"
+  }
 }
