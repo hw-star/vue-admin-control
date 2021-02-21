@@ -46,7 +46,7 @@ export const constantRoutes = [
   {
     path: '/page',
     component: Layout,
-    component: () => import('@/views/user/home'),
+    component: () => import('@/views/user/index'),
     hidden: true
   },
   {
@@ -72,13 +72,13 @@ export const constantRoutes = [
         path: 'table',
         name: '用户列表',
         component: () => import('@/views/manageusers/list'),
-        meta: { title: '用户列表', icon: 'table' }
+        meta: { title: '用户列表', icon: 'el-icon-tickets' }
       },
       {
         path: 'save',
         name: '添加用户',
         component: () => import('@/views/manageusers/save'),
-        meta: { title: '添加用户', icon: 'tree' }
+        meta: { title: '添加用户', icon: 'el-icon-user-solid' }
       },
       {
         path: 'edit/:id',
@@ -89,6 +89,35 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/manageactivity',
+    component: Layout,
+    redirect: '/manageactivity/table',
+    name: '活动管理',
+    meta: { title: '活动管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'table',
+        name: '活动列表',
+        component: () => import('@/views/manageactivity/list'),
+        meta: { title: '活动列表', icon: 'el-icon-tickets' }
+      },
+      {
+        path: 'save',
+        name: '添加活动',
+        component: () => import('@/views/manageactivity/save'),
+        meta: { title: '添加活动', icon: 'el-icon-user-solid' }
+      },
+      {
+        path: 'details/:id',
+        name: '活动详情',
+        component: () => import('@/views/manageactivity/details'),
+        meta: { title: '活动详情', noCache: 'true' },
+        hidden: true
+      }
+    ]
+  },
+
 
   {
     path: '/example',

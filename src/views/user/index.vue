@@ -118,13 +118,11 @@
 </template>
 
 <script>
-import { bestwishe } from "@/utils/bestwishes";
 import { createcanvasline } from "@/utils/createcanvasline";
 export default {
   name: "userHome",
   mounted() {
     createcanvasline();
-    bestwishe();
   },
   data() {
     return {

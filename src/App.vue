@@ -5,7 +5,11 @@
 </template>
 
 <script>
+import { bestwishe } from "@/utils/bestwishes";
 export default {
-  name: 'App'
+  name: 'App',
+  mounted() {
+    bestwishe();
+  },
 }
 </script>

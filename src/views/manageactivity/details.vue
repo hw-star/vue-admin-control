@@ -1,15 +1,22 @@
 <template>
   <div class="app-container">
-    <!--查询-->
+     <!--查询-->
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
-        <el-input v-model="search" placeholder="输入关键字搜索，如禁用" />
+        <el-input v-model="search" placeholder="输入关键字搜索" />
       </el-form-item>
-      <el-button type="primary" icon="el-icon-search" @click="getlist()"
+      <el-button type="primary" icon="el-icon-search" @click="getOrdersInfo()"
         >查询</el-button
       >
       <el-button type="default" @click="resetData()">清空</el-button>
+      <div style="display:inline;margin:0 40px;font-size:1.4em;font-weight:bold">
+        此活动：<spon style="color:#f40">{{ activity.actName }}</spon><spon style="margin:0 2%">报名志愿者名单</spon>
+        <el-divider direction="vertical"></el-divider>
+        <span>需求人数：{{ activity.actNumber }}</span>
+      <el-divider direction="vertical"></el-divider>
+      <span>已申人数：{{ applyed }}</span></div>
     </el-form>
+    
     <!--数据展示-->
     <el-table
       :data="list"
@@ -21,32 +28,14 @@
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="账号" prop="userId">
+      <el-table-column align="center" label="账号" prop="orId">
       </el-table-column>
-      <el-table-column align="center" label="名字" prop="userName">
+      <el-table-column align="center" label="名字" prop="orName">
       </el-table-column>
-      <el-table-column align="center" label="密码" prop="userPwd">
+      <el-table-column align="center" label="邮箱" prop="orEmail">
       </el-table-column>
-      <el-table-column align="center" label="邮箱" prop="userEmail">
-      </el-table-column>
-      <el-table-column align="center" label="性别">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          {{ scope.row.userSex === 1 ? "男" : "女" }}
-        </template>
-      </el-table-column>
-      <el-table-column label="禁用以及操作" align="center">
-        <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.userStop"
-            :active-value="1"
-            :inactive-value="0"
-            active-color="#13ce66"
-            @change="sysUserStop(scope.row.id, scope.row.userStop)"
-          >
-          </el-switch>
-          <router-link :to="'/manageusers/edit/' + scope.row.id">
-            <el-button style="margin: 0px 4px" size="mini">修改</el-button>
-          </router-link>
           <el-button
             style="margin: 0px 4px"
             size="mini"
@@ -57,7 +46,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-footer class="footerPage">
       <!--分页-->
       <el-pagination
         background
@@ -70,33 +58,57 @@
         :page-size="limit"
       >
       </el-pagination>
-    </el-footer>
   </div>
 </template>
+
 <script>
-import manageusers from "@/api/manageusers";
+import manageactivity from "@/api/manageactivity";
 export default {
   data() {
     return {
+      activity: {
+        id: "",
+        actName: "",
+        actCreate: "",
+        actUpdate: "",
+        actNumber: "",
+        actNumbered: "",
+        actdescription: "",
+      },
       page: 1, //当前页
-      limit: 8, //每页记录数
+      limit: 6, //每页记录数
       list: null,
       total: 0,
       search: "",
       loading: true,
+      id: "",
+      applyed:"",
     };
   },
   created() {
-    this.getlist();
+    if (this.$route.params && this.$route.params.id) {
+      const id = this.$route.params.id;
+      this.id = id
+      this.getActivityInfo(id);
+      this.getOrdersInfo()
+    } else {
+      this.activity = {};
+    }
   },
   methods: {
-    getlist(page = 1) {
+    getActivityInfo(id) {
+      manageactivity.getActivity(id).then((response) => {
+        this.activity = response.data;
+      });
+    },
+    getOrdersInfo(page = 1) {
       this.page = page;
-      manageusers
-        .getUsersListPage(this.page, this.limit, this.search)
+      manageactivity
+        .getOredersListPage(this.id,this.page, this.limit, this.search)
         .then((response) => {
-          this.list = response.data.userdata;
+          this.list = response.data.ordersdata;
           this.total = response.data.total;
+          this.applyed = response.data.applyed;
           this.loading = false;
         });
     },
@@ -115,17 +127,9 @@ export default {
         });
       });
     },
-    resetData() {
+     resetData() {
       this.search = "";
-      this.getlist();
-    },
-    sysUserStop(id, stateCode) {
-      manageusers.StopUser(id, stateCode).then((response) => {
-        this.$message({
-          type: "success",
-          message: "更改成功!",
-        });
-      });
+      this.getOrdersInfo();
     },
   },
 };

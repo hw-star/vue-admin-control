@@ -1,13 +1,30 @@
 <template>
   <div class="app-container">
     <!--查询-->
-    <el-form :inline="true" class="demo-form-inline">
+   <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
-        <el-input v-model="search" placeholder="输入关键字搜索，如禁用" />
+        <el-input v-model="activityBody.fuzzyquery" placeholder="输入关键字搜索"/>
       </el-form-item>
-      <el-button type="primary" icon="el-icon-search" @click="getlist()"
-        >查询</el-button
-      >
+      <el-form-item label="添加创建时间">
+        <el-date-picker
+          v-model="activityBody.begin"
+          type="datetime"
+          placeholder="选择开始时间"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          default-time="00:00:00"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-date-picker
+          v-model="activityBody.end"
+          type="datetime"
+          placeholder="选择截止时间"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          default-time="00:00:00"
+        />
+      </el-form-item>
+
+      <el-button type="primary" icon="el-icon-search" @click="getlist()">查询</el-button>
       <el-button type="default" @click="resetData()">清空</el-button>
     </el-form>
     <!--数据展示-->
@@ -21,29 +38,19 @@
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="账号" prop="userId">
+      <el-table-column align="center" label="活动号" prop="id">
       </el-table-column>
-      <el-table-column align="center" label="名字" prop="userName">
+      <el-table-column align="center" label="名称" prop="actName">
       </el-table-column>
-      <el-table-column align="center" label="密码" prop="userPwd">
+      <el-table-column align="center" label="创建时间" prop="actCreate">
       </el-table-column>
-      <el-table-column align="center" label="邮箱" prop="userEmail">
+      <el-table-column align="center" label="更新时间" prop="actUpdate">
       </el-table-column>
-      <el-table-column align="center" label="性别">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          {{ scope.row.userSex === 1 ? "男" : "女" }}
-        </template>
-      </el-table-column>
-      <el-table-column label="禁用以及操作" align="center">
-        <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.userStop"
-            :active-value="1"
-            :inactive-value="0"
-            active-color="#13ce66"
-            @change="sysUserStop(scope.row.id, scope.row.userStop)"
-          >
-          </el-switch>
+          <router-link :to="'/manageactivity/details/' + scope.row.id">
+            <el-button style="margin: 0px 4px" size="mini">详情</el-button>
+          </router-link>
           <router-link :to="'/manageusers/edit/' + scope.row.id">
             <el-button style="margin: 0px 4px" size="mini">修改</el-button>
           </router-link>
@@ -57,8 +64,8 @@
         </template>
       </el-table-column>
     </el-table>
+    <!--分页-->
     <el-footer class="footerPage">
-      <!--分页-->
       <el-pagination
         background
         align="center"
@@ -74,7 +81,7 @@
   </div>
 </template>
 <script>
-import manageusers from "@/api/manageusers";
+import manageactivity from "@/api/manageactivity";
 export default {
   data() {
     return {
@@ -82,7 +89,7 @@ export default {
       limit: 8, //每页记录数
       list: null,
       total: 0,
-      search: "",
+      activityBody: {},
       loading: true,
     };
   },
@@ -92,21 +99,24 @@ export default {
   methods: {
     getlist(page = 1) {
       this.page = page;
-      manageusers
-        .getUsersListPage(this.page, this.limit, this.search)
+      manageactivity
+        .getActivityListPage(this.page, this.limit, this.activityBody)
         .then((response) => {
-          this.list = response.data.userdata;
+          this.list = response.data.activitydata;
           this.total = response.data.total;
           this.loading = false;
         });
     },
+    handleEdit(index, row) {
+      console.log(index, row);
+    },
     handleDelete(id) {
-      this.$confirm("此操作将删除该用户, 是否继续?", "提示", {
+      this.$confirm("此操作将删除该活动, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       }).then(() => {
-        manageusers.deleteUserId(id).then((response) => {
+        manageactivity.deleteActivityId(id).then((response) => {
           this.$message({
             type: "success",
             message: "删除成功!",
@@ -116,7 +126,9 @@ export default {
       });
     },
     resetData() {
-      this.search = "";
+      console.log(this.activityBody.begin);
+      console.log(this.activityBody.end);
+      this.activityBody = {};
       this.getlist();
     },
     sysUserStop(id, stateCode) {

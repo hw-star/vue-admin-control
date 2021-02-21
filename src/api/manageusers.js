@@ -38,6 +38,14 @@ export default{
       method: 'post',
       data: user
     })
-  }
+  },
+
+  // 禁用某个用户
+  StopUser(id,stateCode){
+    return request({
+      url: `/sysuser/stopuser/${id}/${stateCode}`,
+      method: 'get',
+    })
+  },
 
 }
