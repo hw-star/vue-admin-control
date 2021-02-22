@@ -114,6 +114,13 @@ export const constantRoutes = [
         component: () => import('@/views/manageactivity/details'),
         meta: { title: '活动详情', noCache: 'true' },
         hidden: true
+      },
+      {
+        path: 'edit/:id',
+        name: '编辑活动',
+        component: () => import('@/views/manageactivity/save'),
+        meta: { title: '编辑活动', noCache: 'true' },
+        hidden: true
       }
     ]
   },

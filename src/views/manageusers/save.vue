@@ -28,7 +28,7 @@
       <!-- 讲师头像 -->
       <el-form-item label="用户头像">
         <!-- 头衔缩略图 -->
-        <pan-thumb :image="user.userAvatar" />
+        <pan-thumb :image="user.userAvatar +''" />
         <!-- 文件上传按钮 -->
         <el-button
           type="primary"

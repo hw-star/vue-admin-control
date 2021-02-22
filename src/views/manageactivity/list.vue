@@ -33,12 +33,12 @@
       v-loading="loading"
       style="width: 100%; height: 469.6px"
     >
-      <el-table-column label="序号" width="70" align="center">
+      <el-table-column label="序号" width="80" align="center">
         <template slot-scope="scope">
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="活动号" prop="id">
+      <el-table-column align="center" width="90" label="活动号" prop="id">
       </el-table-column>
       <el-table-column align="center" label="名称" prop="actName">
       </el-table-column>
@@ -46,12 +46,20 @@
       </el-table-column>
       <el-table-column align="center" label="更新时间" prop="actUpdate">
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column label="是否启用以及操作" align="center">
         <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.actActive"
+            :active-value="1"
+            :inactive-value="0"
+            active-color="#13ce66"
+            @change="activityStop(scope.row.id, scope.row.actActive)"
+          >
+          </el-switch>
           <router-link :to="'/manageactivity/details/' + scope.row.id">
             <el-button style="margin: 0px 4px" size="mini">详情</el-button>
           </router-link>
-          <router-link :to="'/manageusers/edit/' + scope.row.id">
+          <router-link :to="'/manageactivity/edit/' + scope.row.id">
             <el-button style="margin: 0px 4px" size="mini">修改</el-button>
           </router-link>
           <el-button
@@ -123,19 +131,19 @@ export default {
           });
           this.getlist();
         });
+      }).catch((error) =>{
+        
       });
     },
     resetData() {
-      console.log(this.activityBody.begin);
-      console.log(this.activityBody.end);
       this.activityBody = {};
       this.getlist();
     },
-    sysUserStop(id, stateCode) {
-      manageusers.StopUser(id, stateCode).then((response) => {
+    activityStop(id, stateCode) {
+      manageactivity.StopActivity(id, stateCode).then((response) => {
         this.$message({
           type: "success",
-          message: "更改成功!",
+          message: "操作成功!",
         });
       });
     },

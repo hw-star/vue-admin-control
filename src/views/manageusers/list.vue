@@ -113,6 +113,8 @@ export default {
           });
           this.getlist();
         });
+      }).catch((error) =>{
+        
       });
     },
     resetData() {

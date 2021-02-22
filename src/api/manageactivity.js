@@ -9,17 +9,17 @@ export default{
       data: activityBody
     });
   },
-  // 删除某个活动
-  deleteActivityId(id){
+  // 取消某个用户的某个活动
+  disApplyId(id){
     return request({
-      url: `/activity/deleteactivity/${id}`,
+      url: `/orders/deleteorder/${id}`,
       method: 'delete'
     })
   },
   // 添加某个活动
-  addUser(activity){
+  addActivity(activity){
     return request({
-      url: `/activity/addactivity/`,
+      url: `/activity/saveActivity/`,
       method: 'post',
       data: activity
     })
@@ -40,11 +40,18 @@ export default{
     })
   },
   // 更新某个活动
-  updateUser(activity){
+  updateActivity(activity){
     return request({
       url: `/activity/updateactivity`,
       method: 'post',
       data: activity
+    })
+  },
+  //是否启用某个活动
+  StopActivity(id,stateCode){
+    return request({
+      url: `/activity/stopactivity/${id}/${stateCode}`,
+      method: 'get',
     })
   },
 

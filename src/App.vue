@@ -13,3 +13,6 @@ export default {
   },
 }
 </script>
+<style>
+@import "../src/assets/css/index.css";
+</style>
