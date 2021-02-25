@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+// import { createWebHistory } from 'vue-router'
 
 Vue.use(Router)
 
@@ -153,7 +154,8 @@ export const asyncRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
+  //history: createWebHistory(process.env.VUE_APP_BASE_API),
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

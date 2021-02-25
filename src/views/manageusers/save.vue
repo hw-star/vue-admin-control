@@ -4,8 +4,8 @@
       <el-form-item label="用户名字">
         <el-input style="width: 38%" v-model="user.userName" />
       </el-form-item>
-      <el-form-item v-show="theUpdateSysUserId" label="用户账号">
-        <el-input style="width: 38%" v-model="user.userId" />
+      <el-form-item label="用户账号">
+        <el-input style="width: 38%" v-model="user.userId" :disabled="theUpdateSysUserId" />
       </el-form-item>
       <el-form-item label="用户密码">
         <el-input style="width: 38%" v-model="user.userPwd" />
@@ -85,7 +85,7 @@ export default {
         userPwd: "",
         userAvatar: "",
       },
-      theUpdateSysUserId: true,
+      theUpdateSysUserId: false,
       imagecropperShow: false,
       imagecropperKey: 0,
       BASE_API: process.env.VUE_APP_BASE_API,
@@ -97,7 +97,7 @@ export default {
     if (this.$route.params && this.$route.params.id) {
       const id = this.$route.params.id;
       this.getUserInfo(id);
-      this.theUpdateSysUserId = false;
+      this.theUpdateSysUserId = true;
     } else {
       this.user = {};
     }
