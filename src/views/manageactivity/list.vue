@@ -5,7 +5,7 @@
       <el-form-item>
         <el-input v-model="activityBody.fuzzyquery" placeholder="输入关键字搜索"/>
       </el-form-item>
-      <el-form-item label="添加创建时间">
+      <el-form-item label="添加更新时间">
         <el-date-picker
           v-model="activityBody.begin"
           type="datetime"
