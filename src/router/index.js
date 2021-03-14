@@ -60,7 +60,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/manageusers/table',
     name: '用户管理',
-    meta: { title: '用户管理', icon: 'el-icon-s-help' },
+    meta: { title: '用户管理', icon: 'el-icon-user-solid', roles: ['admin']},
     children: [
       {
         path: 'table',
@@ -88,7 +88,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/manageactivity/table',
     name: '活动管理',
-    meta: { title: '活动管理', icon: 'el-icon-s-help' },
+    meta: { title: '活动管理', icon: 'el-icon-s-help', roles: ['admin']},
     children: [
       {
         path: 'table',
@@ -132,7 +132,8 @@ export const asyncRoutes = [
     name: 'Nested',
     meta: {
       title: '权限管理',
-      icon: 'nested'
+      icon: 'nested',
+      roles: ['superadmin']
     },
     children: [
       {
