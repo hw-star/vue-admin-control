@@ -1,7 +1,7 @@
 {
   "name": "youngvolunteer",
   "version": "1.1.0",
-  "description": "毕业设计 NUC",
+  "description": "毕业设计-hw-NUC",
   "author": "3111314916@qq.com>",
   "scripts": {
     "dev": "vue-cli-service serve",
