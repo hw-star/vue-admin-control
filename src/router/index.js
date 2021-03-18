@@ -32,17 +32,22 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 export const constantRoutes = [
+
+  // 登录
   {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
+ 
+  // 404
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
   },
+
+  // 首页
   {
     path: '/',
     component: Layout,
@@ -55,6 +60,7 @@ export const constantRoutes = [
     }]
   },
 
+  // 用户管理
   {
     path: '/manageusers',
     component: Layout,
@@ -83,6 +89,8 @@ export const constantRoutes = [
       }
     ]
   },
+
+  // 活动管理
   {
     path: '/manageactivity',
     component: Layout,
@@ -125,6 +133,8 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+
+  // 权限
   {
     path: '/nested',
     component: Layout,
