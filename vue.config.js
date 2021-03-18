@@ -29,7 +29,6 @@ module.exports = {
   assetsDir: 'static',
   lintOnSave: false, //process.env.NODE_ENV === 'development'
   productionSourceMap: false,
-  /** mock serve 启动入口
   devServer: {
     port: port,
     open: true,
@@ -37,9 +36,8 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')//mock数据
+    // before: require('./mock/mock-server.js') // mock数据
   },
-  */
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
