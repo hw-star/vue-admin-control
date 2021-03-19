@@ -16,7 +16,7 @@
               首页
             </el-dropdown-item>
           </router-link>
-          <router-link to="/">
+          <router-link to="/information">
             <el-dropdown-item align="center">
               个人信息
             </el-dropdown-item>

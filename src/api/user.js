@@ -22,3 +22,11 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function update(sysUser) {
+  return request({
+    url: `/sysuser/update`,
+    method: 'post',
+    data: sysUser
+  })
+}

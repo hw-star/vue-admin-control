@@ -57,16 +57,41 @@ export const constantRoutes = [
       name: 'Home',
       component: () => import('@/views/homes/index'),
       meta: { title: '首页', icon: 'dashboard' }
-    }]
+    },
+    {
+      path: 'information',
+      component: Layout,
+      name: '个人信息',
+      component: () => import('@/views/information/index'),
+      meta: { title: '个人信息', noCache: 'true' },
+      hidden: true
+    }
+
+    ]
   },
 
-  // 用户管理
+]
+
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [
+  /**
+   * admin - all
+   * adminUser - user
+   * adminActivity - activity
+   * adminUserActivity - user,activity
+   * 
+  */
+
+  // 用户管理 admin,adminUser,adminUserActivity
   {
     path: '/manageusers',
     component: Layout,
     redirect: '/manageusers/table',
     name: '用户管理',
-    meta: { title: '用户管理', icon: 'el-icon-user-solid', roles: ['admin']},
+    meta: { title: '用户管理', icon: 'el-icon-user-solid', roles: ['admin','adminUser','adminUserActivity']},
     children: [
       {
         path: 'table',
@@ -90,13 +115,13 @@ export const constantRoutes = [
     ]
   },
 
-  // 活动管理
+  // 活动管理 admin,adminActivity,adminUserActivity
   {
     path: '/manageactivity',
     component: Layout,
     redirect: '/manageactivity/table',
     name: '活动管理',
-    meta: { title: '活动管理', icon: 'el-icon-s-help', roles: ['admin']},
+    meta: { title: '活动管理', icon: 'el-icon-s-help', roles: ['admin','adminActivity','adminUserActivity']},
     children: [
       {
         path: 'table',
@@ -126,36 +151,41 @@ export const constantRoutes = [
       }
     ]
   },
-]
 
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
-export const asyncRoutes = [
-
-  // 权限
+  // 权限 admin
   {
     path: '/nested',
     component: Layout,
-    redirect: '/nested/menu1',
+    redirect: '/nested/table',
     name: 'Nested',
     meta: {
-      title: '权限管理',
-      icon: 'nested',
-      roles: ['superadmin']
+      title: '综合管理',
+      icon: 'nested', 
+      roles: ['admin']
     },
     children: [
       {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'),
-        name: 'Menu1',
+        path: 'role',
+        component: () => import('@/views/nested/role/index'),
+        name: 'Role',
         meta: { title: '角色列表' },
       },
       {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: '权限列表' }
+        path: 'table',
+        component: () => import('@/views/nested/table/index'),
+        meta: { title: '角色分配' }
+      },
+      {
+        path: 'save',
+        component: () => import('@/views/nested/save/index'),
+        meta: { title: '添加管理员' }
+      },
+      {
+        path: 'edit/:id',
+        name: '编辑管理员',
+        component: () => import('@/views/nested/save/index'),
+        meta: { title: '编辑管理员', noCache: 'true' },
+        hidden: true
       }
     ]
   },
