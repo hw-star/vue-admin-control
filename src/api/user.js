@@ -30,3 +30,10 @@ export function update(sysUser) {
     data: sysUser
   })
 }
+export function findPwd(data) {
+  return request({
+    url: `/sysuser/findpwd`,
+    method: 'post',
+    data
+  })
+}

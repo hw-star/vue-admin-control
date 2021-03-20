@@ -1,72 +1,138 @@
 <template>
   <div class="login-container">
+    <!-- 登录 -->
+    <transition name="el-zoom-in-bottom">
+      <div v-show="show" class="transition-box">
+        <el-form
+          ref="loginForm"
+          :model="loginForm"
+          :rules="loginRules"
+          class="login-form"
+          auto-complete="on"
+          label-position="left"
+        >
+          <div class="title-container">
+            <h3 class="title">青年志愿者后台登录</h3>
+          </div>
+
+          <el-form-item prop="userid">
+            <span class="svg-container">
+              <svg-icon icon-class="user" />
+            </span>
+            <el-input
+              ref="userid"
+              v-model="loginForm.userid"
+              placeholder="请输入手机号"
+              name="userid"
+              type="text"
+              tabindex="1"
+              auto-complete="on"
+            />
+          </el-form-item>
+
+          <el-form-item prop="password">
+            <span class="svg-container">
+              <svg-icon icon-class="password" />
+            </span>
+            <el-input
+              :key="passwordType"
+              ref="password"
+              v-model="loginForm.password"
+              :type="passwordType"
+              placeholder="请输入6-18位密码"
+              name="password"
+              tabindex="2"
+              auto-complete="on"
+              @keyup.enter.native="handleLogin"
+            />
+            <span class="show-pwd" @click="showPwd">
+              <svg-icon
+                :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+              />
+            </span>
+          </el-form-item>
+
+          <el-button
+            :loading="loading"
+            type="primary"
+            style="width: 100%; margin-bottom: 20px"
+            @click.native.prevent="handleLogin"
+            >登录</el-button
+          >
+
+          <div class="tips">
+            <span style="margin-right: 20px">
+              <a @click="changeForPwd">忘记密码</a></span
+            >
+          </div>
+        </el-form>
+      </div>
+    </transition>
+    <!-- 密码找回 -->
+    <transition name="el-zoom-in-bottom">
+      <div v-show="showForFind" class="transition-box">
     <el-form
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
+      ref="FindForm"
+      :model="FindForm"
       class="login-form"
       auto-complete="on"
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">青年志愿者后台登录</h3>
+        <h3 class="title">青年志愿者密码找回</h3>
       </div>
 
-      <el-form-item prop="userid">
+      <el-form-item prop="id">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="userid"
-          v-model="loginForm.userid"
-          placeholder="请输入手机号"
-          name="userid"
+          ref="id"
+          v-model="FindForm.id"
+          placeholder="请输入账号"
+          name="id"
           type="text"
           tabindex="1"
           auto-complete="on"
         />
       </el-form-item>
 
-      <el-form-item prop="password">
+      <el-form-item prop="email">
         <span class="svg-container">
-          <svg-icon icon-class="password" />
+          <svg-icon icon-class="邮箱" />
         </span>
         <el-input
-          :key="passwordType"
-          ref="password"
-          v-model="loginForm.password"
-          :type="passwordType"
-          placeholder="请输入6-18位密码"
-          name="password"
-          tabindex="2"
+          ref="email"
+          v-model="FindForm.email"
+          placeholder="请输入邮箱"
+          name="email"
+          type="text"
+          tabindex="1"
           auto-complete="on"
-          @keyup.enter.native="handleLogin"
         />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon
-            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
-          />
-        </span>
       </el-form-item>
 
       <el-button
         :loading="loading"
         type="primary"
-        style="width: 100%; margin-bottom: 30px"
-        @click.native.prevent="handleLogin"
-        >登录</el-button
+        style="width: 100%; margin-bottom: 20px"
+        @click="handleFind"
+        >找回</el-button
       >
 
       <div class="tips">
-        <span style="margin-right: 20px">密码忘记</span>
+        <span style="margin-right: 20px"> <a @click="toLogin">返回</a></span>
       </div>
     </el-form>
+    </div>
+    </transition>
     <div id="adminForLogin"></div>
   </div>
 </template>
 
 <script>
 import { validUsername } from "@/utils/validate";
+import { findPwd } from "@/api/user";
 
 export default {
   name: "Login",
@@ -100,9 +166,15 @@ export default {
           { required: true, trigger: "blur", validator: validatePassword },
         ],
       },
+      FindForm:{
+        id:"",
+        email:""
+      },
       loading: false,
       passwordType: "password",
       redirect: undefined,
+      show: true,
+      showForFind: false,
     };
   },
   watch: {
@@ -144,10 +216,36 @@ export default {
         }
       });
     },
+    changeForPwd() {
+      this.show = false;
+      setTimeout(() => {
+        this.showForFind = true;
+        console.log("+++++");
+      }, 500);
+    },
+    toLogin(){
+      this.showForFind = false;
+      setTimeout(() => {
+        this.show = true;
+        console.log("+++++");
+      }, 500);
+    },
+    handleFind(){
+      findPwd(this.FindForm).then(response =>{
+        const h = this.$createElement;
+        this.$notify({
+          title: '密码找回消息提示',
+          position: 'top-right',
+          message: h('i', { style: 'color: #4169e1;font-weight:bold'}, '您原来的密码已发送到您账号绑定的邮箱，邮箱号：'+ this.FindForm.email)
+        });
+      }).catch(error =>{})
+    }
   },
 };
 </script>
 
+<style>
+</style>
 <style lang="scss">
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
@@ -230,7 +328,7 @@ $light_gray: #eee;
     overflow: hidden;
     border-radius: 20px;
     background: rgba(0, 0, 0, 0.7); //#4169e1
-    box-shadow: 0px 0px 28px 24px rgba(0, 0, 0, .5);
+    box-shadow: 0px 0px 28px 24px rgba(0, 0, 0, 0.5);
   }
 
   .tips {

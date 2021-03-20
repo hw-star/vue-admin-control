@@ -56,7 +56,7 @@ export const constantRoutes = [
       path: 'homes',
       name: 'Home',
       component: () => import('@/views/homes/index'),
-      meta: { title: '首页', icon: 'dashboard' }
+      meta: { title: '首页', icon: '首页' }
     },
     {
       path: 'information',
@@ -91,13 +91,13 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/manageusers/table',
     name: '用户管理',
-    meta: { title: '用户管理', icon: 'el-icon-user-solid', roles: ['admin','adminUser','adminUserActivity']},
+    meta: { title: '用户管理', icon: '用户管理', roles: ['1','2','4']},
     children: [
       {
         path: 'table',
         name: '用户列表',
         component: () => import('@/views/manageusers/list'),
-        meta: { title: '用户列表', icon: 'el-icon-tickets' }
+        meta: { title: '用户列表', icon: 'gy用户列表' }
       },
       {
         path: 'save',
@@ -121,7 +121,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/manageactivity/table',
     name: '活动管理',
-    meta: { title: '活动管理', icon: 'el-icon-s-help', roles: ['admin','adminActivity','adminUserActivity']},
+    meta: { title: '活动管理', icon: '活动管理', roles: ['1','3','4']},
     children: [
       {
         path: 'table',
@@ -133,7 +133,7 @@ export const asyncRoutes = [
         path: 'save',
         name: '添加活动',
         component: () => import('@/views/manageactivity/save'),
-        meta: { title: '添加活动', icon: 'el-icon-user-solid' }
+        meta: { title: '添加活动', icon: '活动' }
       },
       {
         path: 'details/:id',
@@ -160,25 +160,25 @@ export const asyncRoutes = [
     name: 'Nested',
     meta: {
       title: '综合管理',
-      icon: 'nested', 
-      roles: ['admin']
+      icon: '综合管理', 
+      roles: ['1']
     },
     children: [
       {
         path: 'role',
         component: () => import('@/views/nested/role/index'),
         name: 'Role',
-        meta: { title: '角色列表' },
+        meta: { title: '角色列表',icon: '角色列表'},
       },
       {
         path: 'table',
         component: () => import('@/views/nested/table/index'),
-        meta: { title: '角色分配' }
+        meta: { title: '角色分配',icon: '角色分配'}
       },
       {
         path: 'save',
         component: () => import('@/views/nested/save/index'),
-        meta: { title: '添加管理员' }
+        meta: { title: '添加管理员', icon: 'el-icon-user-solid' }
       },
       {
         path: 'edit/:id',

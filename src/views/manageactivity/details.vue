@@ -27,6 +27,7 @@
         >查询</el-button
       >
       <el-button type="default" @click="resetData()">清空</el-button>
+      <el-button type="danger" @click="getExcel()">下载志愿者名单</el-button>
     </el-form>
     <!--数据展示-->
     <el-table
@@ -76,6 +77,7 @@
 
 <script>
 import manageactivity from "@/api/manageactivity";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -145,6 +147,9 @@ export default {
     resetData() {
       this.search = "";
       this.getOrdersInfo();
+    },
+    getExcel() {
+      window.location.href = "http://127.0.0.1:10010/excel/getexcel/" + this.activity.id
     },
   },
 };

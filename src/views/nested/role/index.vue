@@ -29,7 +29,7 @@
       label="代码"
       width="240">
       <template slot-scope="scope">
-        <el-tag type="success">{{scope.row.roleCode}}</el-tag>
+        <el-tag :type="scope.row.roleCode === 'admin' ? 'danger':'success'">{{scope.row.roleCode}}</el-tag>
       </template>
     </el-table-column>
   </el-table>
