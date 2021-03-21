@@ -187,10 +187,10 @@ export default {
       screenfull.toggle();
       this.fullscreen = false;
     },
+
   },
 };
 </script>
-
 <style>
 .activity {
   position: absolute;
