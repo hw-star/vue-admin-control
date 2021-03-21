@@ -1,55 +1,80 @@
 <template>
   <div class="dashboard-container">
-    <div style="margin-left: 420px">
-      <div ref="chart" style="width: 860px; height: 540px"></div>
-    </div>
-    <div class="activity">
-      <el-card class="box-card" shadow="hover">
-        <div slot="header" class="clearfix">
-          <span>账号数量统计</span>
-        </div>
-        <div class="text item">
-          <ul>
-            <li>
-              <i class="iconfont iconyonghu"></i>
-              <div style="display: inline-block" v-html="'用&emsp;户：'"></div>
-              {{ data.user }}
-            </li>
-            <li>
-              <i class="iconfont iconguanliyuan"></i>管理员：{{
-                data.admin +
-                data.adminActivity +
-                data.adminNull +
-                data.adminTwo +
-                data.adminUser
-              }}
-            </li>
-            <li>
-              <i class="iconfont iconhuodong1"></i>
-              <div style="display: inline-block" v-html="'活&emsp;动：'"></div>
-              {{ data.activityNumber }}
-            </li>
-          </ul>
-        </div>
-      </el-card>
-      <div class="window">
+    <div>
+      <div style="margin-left: 420px">
+        <div ref="chart" style="width: 860px; height: 540px"></div>
+      </div>
+      <div class="activity">
         <el-card class="box-card" shadow="hover">
-          <div slot="header" class="clearfix" align="center">
-            <span>操作显示-窗口</span>
+          <div slot="header" class="clearfix">
+            <span>账号数量统计</span>
           </div>
-          <div class="set_operation_text">
-            <ul class="setleft" :class="{anim:animate==true}">
-              <li v-for="(item, index) in operationData" :key="index">
-                <div>IP：{{ item.ip }}<div style="display: inline-block" v-html="'&emsp;&emsp;'"></div>时间：{{item.time}}<div style="display: inline-block" v-html="'&emsp;&emsp;'"></div><div style="display: inline-block" v-if="item.name">名字：{{ item.name }}</div></div>
-                <div>
-                  URL：
-                  <div>{{ item.url }}</div>
-                </div>
+          <div class="text item">
+            <ul>
+              <li>
+                <i class="iconfont iconyonghu"></i>
+                <div
+                  style="display: inline-block"
+                  v-html="'用&emsp;户：'"
+                ></div>
+                {{ data.user }}
+              </li>
+              <li>
+                <i class="iconfont iconguanliyuan"></i>管理员：{{
+                  data.admin +
+                  data.adminActivity +
+                  data.adminNull +
+                  data.adminTwo +
+                  data.adminUser
+                }}
+              </li>
+              <li>
+                <i class="iconfont iconhuodong1"></i>
+                <div
+                  style="display: inline-block"
+                  v-html="'活&emsp;动：'"
+                ></div>
+                {{ data.activityNumber }}
               </li>
             </ul>
           </div>
         </el-card>
+        <div class="window">
+          <el-card class="box-card" shadow="hover">
+            <div slot="header" class="clearfix" align="center">
+              <span>操作显示-窗口</span>
+            </div>
+            <div class="set_operation_text">
+              <ul class="setleft" :class="{ anim: animate == true }">
+                <li v-for="(item, index) in operationData" :key="index">
+                  <div>
+                    IP：{{ item.ip }}
+                    <div
+                      style="display: inline-block"
+                      v-html="'&emsp;&emsp;'"
+                    ></div>
+                    时间：{{ item.time }}
+                    <div
+                      style="display: inline-block"
+                      v-html="'&emsp;&emsp;'"
+                    ></div>
+                    <div style="display: inline-block" v-if="item.name">
+                      名字：{{ item.name }}
+                    </div>
+                  </div>
+                  <div>
+                    URL：
+                    <div>{{ item.url }}</div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </el-card>
+        </div>
       </div>
+      <a class="allscreen" v-if="fullscreen" @click="fullScreen"
+        ><i class="iconfont iconquanping"></i
+      ></a>
     </div>
   </div>
 </template>
@@ -58,15 +83,15 @@
 import { mapGetters } from "vuex";
 import api from "@/api/charts";
 import get from "@/api/logdata";
-
+import screenfull from "screenfull";
 export default {
   name: "Home",
   data() {
     return {
       data: {},
-      animate:false,
-      operationData: [
-      ],
+      animate: false,
+      operationData: [],
+      fullscreen: true,
     };
   },
   computed: {
@@ -76,10 +101,10 @@ export default {
     //this.showChart();
     this.getData();
     setInterval(this.showPersontionData, 2000);
-    setInterval(this.getOperationData, (2000+600) * 20);
+    setInterval(this.getOperationData, (2000 + 600) * 20);
   },
   created() {
-    this.getOperationData()
+    this.getOperationData();
   },
   methods: {
     showChart() {
@@ -139,18 +164,29 @@ export default {
         .catch((error) => {});
     },
     showPersontionData() {
-      this.animate=true;
+      this.animate = true;
       setTimeout(() => {
         this.operationData.push(this.operationData[0]);
         this.operationData.shift();
-        this.animate=false;
+        this.animate = false;
       }, 600);
     },
-    getOperationData(){
-      get.getLogData().then(response =>{
-        this.operationData = response.data
-      }).catch(error =>{})
-    }
+    getOperationData() {
+      get
+        .getLogData()
+        .then((response) => {
+          this.operationData = response.data;
+        })
+        .catch((error) => {});
+    },
+    fullScreen() {
+      if (!screenfull.enabled) {
+        this.$message("您的浏览器不能全屏");
+        return false;
+      }
+      screenfull.toggle();
+      this.fullscreen = false;
+    },
   },
 };
 </script>
@@ -184,17 +220,17 @@ export default {
   overflow: hidden;
   margin-top: -10px;
 }
-.activity .set_operation_text ul li{
+.activity .set_operation_text ul li {
   margin-bottom: 26px;
 }
-.activity .setleft ul li{
-    list-style: none;
-    line-height: 30px;
-    height: 30px;
+.activity .setleft ul li {
+  list-style: none;
+  line-height: 30px;
+  height: 30px;
 }
-.anim{
-    transition: all 0.5s ease-out;
-    margin-top: -80px;
+.anim {
+  transition: all 0.5s ease-out;
+  margin-top: -80px;
 }
 .clearfix:before,
 .clearfix:after {
@@ -215,6 +251,12 @@ export default {
 }
 .activity .window .setleft {
   margin-left: -50px;
+}
+.allscreen i{
+ margin-left: 1210px;
+ font-size: 1.6em;
+ font-weight: bold;
+ color: #4169e1;
 }
 </style>
 <style lang="scss" scoped>
