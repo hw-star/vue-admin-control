@@ -1,13 +1,55 @@
 <template>
   <div class="dashboard-container">
-    <div style="margin-left:420px">
-      <div ref="chart" style="width: 800px; height: 500px"></div>
+    <div style="margin-left: 420px">
+      <div ref="chart" style="width: 860px; height: 540px"></div>
     </div>
     <div class="activity">
-      <ul>
-        <li>用户：{{data.user}} </li>
-        <li>管理员：{{data.admin + data.adminActivity + data.adminNull + data.adminTwo + data.adminUser}}</li>
-      </ul>
+      <el-card class="box-card" shadow="hover">
+        <div slot="header" class="clearfix">
+          <span>账号数量统计</span>
+        </div>
+        <div class="text item">
+          <ul>
+            <li>
+              <i class="iconfont iconyonghu"></i>
+              <div style="display: inline-block" v-html="'用&emsp;户：'"></div>
+              {{ data.user }}
+            </li>
+            <li>
+              <i class="iconfont iconguanliyuan"></i>管理员：{{
+                data.admin +
+                data.adminActivity +
+                data.adminNull +
+                data.adminTwo +
+                data.adminUser
+              }}
+            </li>
+            <li>
+              <i class="iconfont iconhuodong1"></i>
+              <div style="display: inline-block" v-html="'活&emsp;动：'"></div>
+              {{ data.activityNumber }}
+            </li>
+          </ul>
+        </div>
+      </el-card>
+      <div class="window">
+        <el-card class="box-card" shadow="hover">
+          <div slot="header" class="clearfix" align="center">
+            <span>操作显示-窗口</span>
+          </div>
+          <div class="set_operation_text">
+            <ul class="setleft" :class="{anim:animate==true}">
+              <li v-for="(item, index) in operationData" :key="index">
+                <div>IP：{{ item.ip }}<div style="display: inline-block" v-html="'&emsp;&emsp;'"></div>时间：{{item.time}}<div style="display: inline-block" v-html="'&emsp;&emsp;'"></div><div style="display: inline-block" v-if="item.name">名字：{{ item.name }}</div></div>
+                <div>
+                  URL：
+                  <div>{{ item.url }}</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </el-card>
+      </div>
     </div>
   </div>
 </template>
@@ -15,22 +57,29 @@
 <script>
 import { mapGetters } from "vuex";
 import api from "@/api/charts";
+import get from "@/api/logdata";
 
 export default {
   name: "Home",
   data() {
     return {
       data: {},
+      animate:false,
+      operationData: [
+      ],
     };
   },
   computed: {
     ...mapGetters(["name", "roles"]),
   },
   mounted() {
-    this.showChart();
+    //this.showChart();
+    this.getData();
+    setInterval(this.showPersontionData, 2000);
+    setInterval(this.getOperationData, (2000+600) * 20);
   },
   created() {
-    this.getData();
+    this.getOperationData()
   },
   methods: {
     showChart() {
@@ -49,6 +98,11 @@ export default {
             type: "pie",
             radius: ["40%", "70%"],
             avoidLabelOverlap: false,
+            itemStyle: {
+              borderRadius: 10,
+              borderColor: "#fff",
+              borderWidth: 2,
+            },
             label: {
               show: false,
               position: "center",
@@ -64,11 +118,10 @@ export default {
               show: false,
             },
             data: [
-              { value: this.data.user, name: "普通用户" },
-              { value: this.data.admin, name: "超级管理员" },
-              { value: this.data.adminUser, name: "用户管理员" },
               { value: this.data.adminActivity, name: "活动管理员" },
               { value: this.data.adminTwo, name: "高级管理员" },
+              { value: this.data.adminUser, name: "用户管理员" },
+              { value: this.data.admin, name: "超级管理员" },
               { value: this.data.adminNull, name: "无权限管理员" },
             ],
           },
@@ -85,21 +138,83 @@ export default {
         })
         .catch((error) => {});
     },
+    showPersontionData() {
+      this.animate=true;
+      setTimeout(() => {
+        this.operationData.push(this.operationData[0]);
+        this.operationData.shift();
+        this.animate=false;
+      }, 600);
+    },
+    getOperationData(){
+      get.getLogData().then(response =>{
+        this.operationData = response.data
+      }).catch(error =>{})
+    }
   },
 };
 </script>
 
 <style>
-.activity{
+.activity {
   position: absolute;
   left: 60px;
-  top: 100px;
+  top: 112px;
 }
-.activity ul li{
-  margin: 6px 6px;
+.activity ul li {
+  margin: 12px 6px;
   padding: 4px 4px;
   font-weight: bold;
+  list-style: none;
+}
+.activity ul li i {
+  color: #4169e1;
+  margin: 4px 6px;
+  font-size: 1em;
+}
+.text {
   font-size: 20px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+.activity .set_operation_text {
+  font-size: 14px;
+  overflow: hidden;
+  margin-top: -10px;
+}
+.activity .set_operation_text ul li{
+  margin-bottom: 26px;
+}
+.activity .setleft ul li{
+    list-style: none;
+    line-height: 30px;
+    height: 30px;
+}
+.anim{
+    transition: all 0.5s ease-out;
+    margin-top: -80px;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
+
+.box-card {
+  width: 510px;
+  height: 250px;
+  overflow: hidden;
+}
+.activity .window {
+  margin-top: 30px;
+}
+.activity .window .setleft {
+  margin-left: -50px;
 }
 </style>
 <style lang="scss" scoped>
