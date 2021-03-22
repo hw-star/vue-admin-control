@@ -92,6 +92,7 @@ export default {
       animate: false,
       operationData: [],
       fullscreen: true,
+      count: 1,
     };
   },
   computed: {
@@ -101,10 +102,18 @@ export default {
     //this.showChart();
     this.getData();
     setInterval(this.showPersontionData, 2000);
-    setInterval(this.getOperationData, (2000 + 600) * 20);
+    // setInterval(this.getOperationData, 2000 * 20);
   },
   created() {
     this.getOperationData();
+  },
+  watch: {
+    count(newCount, oldCount) {
+      if (newCount == 20) {
+        this.count = 1;
+        this.getOperationData();
+      }
+    },
   },
   methods: {
     showChart() {
@@ -170,6 +179,7 @@ export default {
         this.operationData.shift();
         this.animate = false;
       }, 600);
+      this.count += 1;
     },
     getOperationData() {
       get
@@ -187,7 +197,6 @@ export default {
       screenfull.toggle();
       this.fullscreen = false;
     },
-
   },
 };
 </script>
@@ -219,6 +228,7 @@ export default {
   font-size: 14px;
   overflow: hidden;
   margin-top: -10px;
+  color: rgba(102, 204, 102, .8);
 }
 .activity .set_operation_text ul li {
   margin-bottom: 26px;
@@ -252,11 +262,11 @@ export default {
 .activity .window .setleft {
   margin-left: -50px;
 }
-.allscreen i{
- margin-left: 1210px;
- font-size: 1.6em;
- font-weight: bold;
- color: #4169e1;
+.allscreen i {
+  margin-left: 1210px;
+  font-size: 1.6em;
+  font-weight: bold;
+  color: #4169e1;
 }
 </style>
 <style lang="scss" scoped>

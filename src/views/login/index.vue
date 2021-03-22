@@ -220,7 +220,6 @@ export default {
       this.show = false;
       setTimeout(() => {
         this.showForFind = true;
-        console.log("+++++");
       }, 500);
     },
     toLogin(){
