@@ -110,7 +110,7 @@ export default {
   },
   watch: {
     count(newCount, oldCount) {
-      if (newCount === 20) {
+      if (newCount === 40) {
         this.count = 1;
         this.getOperationData();
       }
