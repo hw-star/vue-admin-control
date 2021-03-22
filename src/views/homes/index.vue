@@ -1,9 +1,11 @@
 <template>
   <div class="dashboard-container">
     <div>
+      <!-- 图表 -->
       <div style="margin-left: 420px">
         <div ref="chart" style="width: 860px; height: 540px"></div>
       </div>
+      <!-- 卡片 -->
       <div class="activity">
         <el-card class="box-card" shadow="hover">
           <div slot="header" class="clearfix">
@@ -72,6 +74,7 @@
           </el-card>
         </div>
       </div>
+      <!-- 全屏 -->
       <a class="allscreen" v-if="fullscreen" @click="fullScreen"
         ><i class="iconfont iconquanping"></i
       ></a>
@@ -101,15 +104,13 @@ export default {
   mounted() {
     //this.showChart();
     this.getData();
+    this.getOperationData();
     setInterval(this.showPersontionData, 2000);
     // setInterval(this.getOperationData, 2000 * 20);
   },
-  created() {
-    this.getOperationData();
-  },
   watch: {
     count(newCount, oldCount) {
-      if (newCount == 20) {
+      if (newCount === 20) {
         this.count = 1;
         this.getOperationData();
       }
@@ -226,7 +227,6 @@ export default {
 }
 .activity .set_operation_text {
   font-size: 14px;
-  overflow: hidden;
   margin-top: -10px;
   color: rgba(102, 204, 102, .8);
 }
@@ -240,7 +240,7 @@ export default {
 }
 .anim {
   transition: all 0.5s ease-out;
-  margin-top: -80px;
+  margin-top: -90px;
 }
 .clearfix:before,
 .clearfix:after {
@@ -250,7 +250,9 @@ export default {
 .clearfix:after {
   clear: both;
 }
-
+.el-card__body{
+  overflow: hidden;
+}
 .box-card {
   width: 510px;
   height: 250px;
