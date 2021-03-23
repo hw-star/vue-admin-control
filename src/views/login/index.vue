@@ -71,60 +71,62 @@
     <!-- 密码找回 -->
     <transition name="el-zoom-in-bottom">
       <div v-show="showForFind" class="transition-box">
-    <el-form
-      ref="FindForm"
-      :model="FindForm"
-      class="login-form"
-      auto-complete="on"
-      label-position="left"
-    >
-      <div class="title-container">
-        <h3 class="title">青年志愿者密码找回</h3>
-      </div>
-
-      <el-form-item prop="id">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="id"
-          v-model="FindForm.id"
-          placeholder="请输入账号"
-          name="id"
-          type="text"
-          tabindex="1"
+        <el-form
+          ref="FindForm"
+          :model="FindForm"
+          class="login-form"
           auto-complete="on"
-        />
-      </el-form-item>
+          label-position="left"
+        >
+          <div class="title-container">
+            <h3 class="title">青年志愿者密码找回</h3>
+          </div>
 
-      <el-form-item prop="email">
-        <span class="svg-container">
-          <svg-icon icon-class="邮箱" />
-        </span>
-        <el-input
-          ref="email"
-          v-model="FindForm.email"
-          placeholder="请输入邮箱"
-          name="email"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
+          <el-form-item prop="id">
+            <span class="svg-container">
+              <svg-icon icon-class="user" />
+            </span>
+            <el-input
+              ref="id"
+              v-model="FindForm.id"
+              placeholder="请输入账号"
+              name="id"
+              type="text"
+              tabindex="1"
+              auto-complete="on"
+            />
+          </el-form-item>
 
-      <el-button
-        :loading="loading"
-        type="primary"
-        style="width: 100%; margin-bottom: 20px"
-        @click="handleFind"
-        >找回</el-button
-      >
+          <el-form-item prop="email">
+            <span class="svg-container">
+              <svg-icon icon-class="邮箱" />
+            </span>
+            <el-input
+              ref="email"
+              v-model="FindForm.email"
+              placeholder="请输入邮箱"
+              name="email"
+              type="text"
+              tabindex="1"
+              auto-complete="on"
+            />
+          </el-form-item>
 
-      <div class="tips">
-        <span style="margin-right: 20px"> <a @click="toLogin">返回</a></span>
+          <el-button
+            :loading="loading"
+            type="primary"
+            style="width: 100%; margin-bottom: 20px"
+            @click="handleFind"
+            >找回</el-button
+          >
+
+          <div class="tips">
+            <span style="margin-right: 20px">
+              <a @click="toLogin">返回</a></span
+            >
+          </div>
+        </el-form>
       </div>
-    </el-form>
-    </div>
     </transition>
     <div id="adminForLogin"></div>
   </div>
@@ -166,9 +168,9 @@ export default {
           { required: true, trigger: "blur", validator: validatePassword },
         ],
       },
-      FindForm:{
-        id:"",
-        email:""
+      FindForm: {
+        id: "",
+        email: "",
       },
       loading: false,
       passwordType: "password",
@@ -222,23 +224,30 @@ export default {
         this.showForFind = true;
       }, 500);
     },
-    toLogin(){
+    toLogin() {
       this.showForFind = false;
       setTimeout(() => {
         this.show = true;
-        console.log("+++++");
       }, 500);
     },
-    handleFind(){
-      findPwd(this.FindForm).then(response =>{
-        const h = this.$createElement;
-        this.$notify({
-          title: '密码找回消息提示',
-          position: 'top-right',
-          message: h('i', { style: 'color: #4169e1;font-weight:bold'}, '您原来的密码已发送到您账号绑定的邮箱，邮箱号：'+ this.FindForm.email)
-        });
-      }).catch(error =>{})
-    }
+    handleFind() {
+      findPwd(this.FindForm)
+        .then((response) => {
+          const h = this.$createElement;
+          this.$notify({
+            title: "密码找回消息提示",
+            position: "top-right",
+            message: h(
+              "i",
+              { style: "color: #4169e1;font-weight:bold" },
+              "您原来的密码已发送到您账号绑定的邮箱，邮箱号：" +
+                this.FindForm.email
+            ),
+          });
+          this.$router.go({ push: "/" });
+        })
+        .catch((error) => {});
+    },
   },
 };
 </script>
