@@ -94,6 +94,7 @@
               type="text"
               tabindex="1"
               auto-complete="on"
+              @blur="onBsp($event)"
             />
           </el-form-item>
 
@@ -102,9 +103,20 @@
               <svg-icon icon-class="邮箱" />
             </span>
             <el-input
+              v-if="theSuggestion"
               ref="email"
               v-model="FindForm.email"
-              placeholder="请输入邮箱"
+              placeholder="此账号绑定的邮箱"
+              name="email"
+              type="text"
+              tabindex="1"
+              auto-complete="on"
+            />
+            <el-input
+              v-else
+              ref="email"
+              v-model="FindForm.email"
+              :placeholder="`此ID：` + FindForm.id + `\u3000绑定的邮箱`"
               name="email"
               type="text"
               tabindex="1"
@@ -177,6 +189,7 @@ export default {
       redirect: undefined,
       show: true,
       showForFind: false,
+      theSuggestion: true,
     };
   },
   watch: {
@@ -226,6 +239,8 @@ export default {
     },
     toLogin() {
       this.showForFind = false;
+      this.FindForm = {}
+      this.theSuggestion = true
       setTimeout(() => {
         this.show = true;
       }, 500);
@@ -247,6 +262,9 @@ export default {
           this.$router.go({ push: "/" });
         })
         .catch((error) => {});
+    },
+    onBsp(event) {
+      this.theSuggestion = false;
     },
   },
 };
