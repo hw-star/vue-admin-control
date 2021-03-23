@@ -121,7 +121,7 @@
           >
 
           <div class="tips">
-            <span style="margin-right: 20px">
+            <span style="margin-right: 34px">
               <a @click="toLogin">返回</a></span
             >
           </div>
