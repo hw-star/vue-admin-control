@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <!-- 登录 -->
-    <transition name="el-zoom-in-bottom">
+    <transition name="el-zoom-in-top">
       <div v-show="show" class="transition-box">
         <el-form
           ref="loginForm"
@@ -69,7 +69,7 @@
       </div>
     </transition>
     <!-- 密码找回 -->
-    <transition name="el-zoom-in-bottom">
+    <transition name="el-zoom-in-top">
       <div v-show="showForFind" class="transition-box">
         <el-form
           ref="FindForm"
