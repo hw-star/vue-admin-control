@@ -66,6 +66,11 @@
                   </div>
                   <div>
                     URL：
+                    <div
+                      style="display: inline-block"
+                      v-html="'&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;'"
+                    ></div>
+                    <div style="display: inline-block">账号：{{item.id}}</div>
                     <div>{{ item.url }}</div>
                   </div>
                 </li>
@@ -228,7 +233,7 @@ export default {
 .activity .set_operation_text {
   font-size: 14px;
   margin-top: -10px;
-  color: rgba(102, 204, 102, .8);
+  color: rgba(102, 204, 102, 0.8);
 }
 .activity .set_operation_text ul li {
   margin-bottom: 26px;
@@ -250,7 +255,7 @@ export default {
 .clearfix:after {
   clear: both;
 }
-.el-card__body{
+.el-card__body {
   overflow: hidden;
 }
 .box-card {
