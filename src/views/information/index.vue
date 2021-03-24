@@ -1,7 +1,12 @@
 <template>
   <div class="app-container">
-    <el-form label-width="80px">
-      <el-form-item label="名字">
+    <el-form
+      label-width="80px"
+      :rules="addOrUpdatesysUserRules"
+      ref="sysUser"
+      :model="sysUser"
+    >
+      <el-form-item label="名字" prop="sysName">
         <el-input
           style="width: 38%"
           v-model="sysUser.sysName"
@@ -11,14 +16,14 @@
       <el-form-item label="账号">
         <el-input style="width: 38%" v-model="sysUser.sysId" :disabled="true" />
       </el-form-item>
-      <el-form-item label="密码">
+      <el-form-item label="密码" prop="sysPwd">
         <el-input
           style="width: 38%"
           v-model="sysUser.sysPwd"
           :disabled="isUpdateInformation"
         />
       </el-form-item>
-      <el-form-item label="邮箱">
+      <el-form-item label="邮箱" prop="sysEmail">
         <el-input
           style="width: 38%"
           v-model="sysUser.sysEmail"
@@ -82,6 +87,13 @@
           @click="startUpdate"
           >保存</el-button
         >
+        <el-button
+          :disabled="saveBtnDisabled"
+          v-if="isUpdateInformation == false"
+          type="warning"
+          @click="channelUpdate"
+          >取消</el-button
+        >
       </el-form-item>
     </el-form>
   </div>
@@ -92,8 +104,31 @@ import store from "@/store";
 import { update } from "@/api/user";
 import ImageCropper from "@/components/ImageCropper";
 import PanThumb from "@/components/PanThumb";
+import { validEmail, validName } from "@/utils/validate";
 export default {
   data() {
+    const validateEmail = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("邮箱不能为空"));
+      } else {
+        if (validEmail(value)) {
+          callback();
+        } else {
+          return callback(new Error("邮箱格式不正确"));
+        }
+      }
+    };
+    const validateName = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("名字不能为空"));
+      } else {
+        if (validName(value)) {
+          callback();
+        } else {
+          return callback(new Error("名字必须是汉字"));
+        }
+      }
+    };
     return {
       sysUser: {},
       saveBtnDisabled: false,
@@ -101,6 +136,22 @@ export default {
       imagecropperShow: false,
       imagecropperKey: 0,
       BASE_API: process.env.VUE_APP_BASE_API,
+      addOrUpdatesysUserRules: {
+        sysPwd: [
+          {
+            required: true,
+            type: "string",
+            trigger: "blur",
+            max: 18,
+            min: 6,
+            message: "密码位数不够",
+          },
+        ],
+        sysEmail: [
+          { required: true, trigger: "blur", validator: validateEmail },
+        ],
+        sysName: [{ required: true, trigger: "blur", validator: validateName }],
+      },
     };
   },
   components: { ImageCropper, PanThumb },
@@ -121,15 +172,21 @@ export default {
     },
     // 更新个人信息
     startUpdate() {
-      update(this.sysUser)
-        .then((response) => {
-          this.$message({
-            type: "success",
-            message: "修改成功!",
-          });
-          this.$router.go({ path: "/information" });
-        })
-        .catch((error) => {});
+      this.$refs.sysUser.validate((valid) => {
+        if (valid) {
+          update(this.sysUser)
+            .then((response) => {
+              this.$message({
+                type: "success",
+                message: "修改成功!",
+              });
+              this.$router.go({ path: "/information" });
+            })
+            .catch((error) => {});
+        } else {
+          return false;
+        }
+      });
     },
     cropSuccess(data) {
       this.imagecropperShow = false;
@@ -141,6 +198,11 @@ export default {
       this.imagecropperShow = false;
       //上传组件初始化
       this.imagecropperKey = this.imagecropperKey + 1;
+    },
+    channelUpdate() {
+      this.$refs["sysUser"].resetFields();
+      this.isUpdateInformation = true;
+      this.getInfoMsg();
     },
   },
 };

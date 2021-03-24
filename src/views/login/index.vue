@@ -74,6 +74,7 @@
         <el-form
           ref="FindForm"
           :model="FindForm"
+          :rules="findRules"
           class="login-form"
           auto-complete="on"
           label-position="left"
@@ -104,7 +105,6 @@
             <el-input
               v-if="theSuggestion"
               ref="email"
-              v-model="FindForm.email"
               placeholder="此账号绑定的邮箱"
               name="email"
               type="text"
@@ -144,27 +144,33 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
+import { validId, validEmail } from "@/utils/validate";
 import { findPwd } from "@/api/user";
 
 export default {
   name: "Login",
   data() {
-    const validateUsername = (rule, value, callback) => {
-      /* if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+    const validateUserId = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("账号不能为空"));
       } else {
-        callback()
-      }*/
-      callback();
+        if (!validId(value)) {
+          callback(new Error("手机号格式不正确"));
+        } else {
+          callback();
+        }
+      }
     };
-    const validatePassword = (rule, value, callback) => {
-      /*if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+    const validateEmail = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("邮箱不能为空"));
       } else {
-        callback()
-      }*/
-      callback();
+        if (validEmail(value)) {
+          callback();
+        } else {
+          return callback(new Error("邮箱格式不正确"));
+        }
+      }
     };
     return {
       loginForm: {
@@ -173,11 +179,22 @@ export default {
       },
       loginRules: {
         userid: [
-          { required: true, trigger: "blur", validator: validateUsername },
+          { required: true, trigger: "blur", validator: validateUserId },
         ],
         password: [
-          { required: true, trigger: "blur", validator: validatePassword },
+          {
+            required: true,
+            type: "string",
+            trigger: "blur",
+            max: 18,
+            min: 6,
+            message: "密码位数不够",
+          },
         ],
+      },
+      findRules: {
+        id: [{ required: true, trigger: "blur", validator: validateUserId }],
+        email: [{ required: true, trigger: "blur", validator: validateEmail }],
       },
       FindForm: {
         id: "",
@@ -225,42 +242,50 @@ export default {
               this.$message.error(error);
             });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
     },
     changeForPwd() {
       this.show = false;
+      this.loginForm = {};
+      this.$refs["loginForm"].resetFields();
       setTimeout(() => {
         this.showForFind = true;
       }, 500);
     },
     toLogin() {
       this.showForFind = false;
-      this.FindForm = {}
-      this.theSuggestion = true
+      this.FindForm = {};
+      this.theSuggestion = true;
+      this.$refs['FindForm'].resetFields()
       setTimeout(() => {
         this.show = true;
       }, 500);
     },
     handleFind() {
-      findPwd(this.FindForm)
-        .then((response) => {
-          const h = this.$createElement;
-          this.$notify({
-            title: "密码找回消息提示",
-            position: "top-right",
-            message: h(
-              "i",
-              { style: "color: #4169e1;font-weight:bold" },
-              "您原来的密码已发送到您账号绑定的邮箱，邮箱号：" +
-                this.FindForm.email
-            ),
-          });
-          this.$router.go({ push: "/" });
-        })
-        .catch((error) => {});
+      this.$refs.FindForm.validate((valid) => {
+        if (valid) {
+          findPwd(this.FindForm)
+            .then((response) => {
+              const h = this.$createElement;
+              this.$notify({
+                title: "密码找回消息提示",
+                position: "top-right",
+                message: h(
+                  "i",
+                  { style: "color: #4169e1;font-weight:bold" },
+                  "您原来的密码已发送到您账号绑定的邮箱，邮箱号：" +
+                    this.FindForm.email
+                ),
+              });
+              this.$router.go({ push: "/" });
+            })
+            .catch((error) => {});
+        } else {
+          return false;
+        }
+      });
     },
     onBsp(event) {
       this.theSuggestion = false;

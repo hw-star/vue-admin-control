@@ -1,16 +1,25 @@
 <template>
   <div class="app-container">
-    <el-form label-width="80px">
-      <el-form-item label="用户名字">
+    <el-form
+      label-width="80px"
+      :rules="addOrUpdateUserRules"
+      ref="user"
+      :model="user"
+    >
+      <el-form-item label="用户名字" prop="userName">
         <el-input style="width: 38%" v-model="user.userName" />
       </el-form-item>
-      <el-form-item label="用户账号">
-        <el-input style="width: 38%" v-model="user.userId" :disabled="theUpdateSysUserId" />
+      <el-form-item label="用户账号" prop="userId">
+        <el-input
+          style="width: 38%"
+          v-model="user.userId"
+          :disabled="theUpdateSysUserId"
+        />
       </el-form-item>
-      <el-form-item label="用户密码">
+      <el-form-item label="用户密码" prop="userPwd">
         <el-input style="width: 38%" v-model="user.userPwd" />
       </el-form-item>
-      <el-form-item label="用户邮箱">
+      <el-form-item label="用户邮箱" prop="userEmail">
         <el-input style="width: 38%" v-model="user.userEmail" />
       </el-form-item>
       <el-form-item label="用户性别">
@@ -28,7 +37,7 @@
       <!-- 讲师头像 -->
       <el-form-item label="用户头像">
         <!-- 头衔缩略图 -->
-        <pan-thumb :image="user.userAvatar +''" />
+        <pan-thumb :image="user.userAvatar + ''" />
         <!-- 文件上传按钮 -->
         <el-button
           type="primary"
@@ -73,8 +82,42 @@
 import manageusers from "@/api/manageusers";
 import ImageCropper from "@/components/ImageCropper";
 import PanThumb from "@/components/PanThumb";
+import { validId, validEmail, validName } from "@/utils/validate";
 export default {
   data() {
+    const validateEmail = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("邮箱不能为空"));
+      } else {
+        if (validEmail(value)) {
+          callback();
+        } else {
+          return callback(new Error("邮箱格式不正确"));
+        }
+      }
+    };
+    const validateUserId = (rule, value, callback) => {
+     if (!value) {
+        return callback(new Error("账号不能为空"));
+      } else {
+        if (!validId(value)) {
+          callback(new Error("手机号格式不正确"));
+        } else {
+          callback();
+        }
+      }
+    };
+    const validateName = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("名字不能为空"));
+      } else {
+        if (validName(value)) {
+          callback();
+        } else {
+          return callback(new Error("名字必须是汉字"));
+        }
+      }
+    };
     return {
       user: {
         id: "",
@@ -90,6 +133,27 @@ export default {
       imagecropperKey: 0,
       BASE_API: process.env.VUE_APP_BASE_API,
       saveBtnDisabled: false,
+      addOrUpdateUserRules: {
+        userId: [
+          { required: true, trigger: "blur", validator: validateUserId },
+        ],
+        userPwd: [
+          {
+            required: true,
+            type: "string",
+            trigger: "blur",
+            max: 18,
+            min: 6,
+            message: "密码位数不够",
+          },
+        ],
+        userEmail: [
+          { required: true, trigger: "blur", validator: validateEmail },
+        ],
+        userName: [
+          { required: true, trigger: "blur", validator: validateName },
+        ],
+      },
     };
   },
   components: { ImageCropper, PanThumb },
@@ -120,13 +184,19 @@ export default {
       });
     },
     updateUser() {
-      manageusers.updateUser(this.user).then((response) => {
-        this.$message({
-          type: "success",
-          message: "修改成功!",
-        });
-        // 路由跳转用户列表
-        this.$router.push({ path: "/manageusers/table" });
+      this.$refs.user.validate((valid) => {
+        if (valid) {
+          manageusers.updateUser(this.user).then((response) => {
+            this.$message({
+              type: "success",
+              message: "修改成功!",
+            });
+            // 路由跳转用户列表
+            this.$router.push({ path: "/manageusers/table" });
+          });
+        } else {
+          return false;
+        }
       });
     },
     saveOrUpdate() {
@@ -137,13 +207,19 @@ export default {
       }
     },
     saveUser() {
-      manageusers.addUser(this.user).then((response) => {
-        this.$message({
-          type: "success",
-          message: "添加成功!",
-        });
-        // 路由跳转用户列表
-        this.$router.push({ path: "/manageusers/table" });
+      this.$refs.user.validate((valid) => {
+        if (valid) {
+          manageusers.addUser(this.user).then((response) => {
+            this.$message({
+              type: "success",
+              message: "添加成功!",
+            });
+            // 路由跳转用户列表
+            this.$router.push({ path: "/manageusers/table" });
+          });
+        } else {
+          return false;
+        }
       });
     },
   },
