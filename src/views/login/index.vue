@@ -81,7 +81,6 @@
           <div class="title-container">
             <h3 class="title">青年志愿者密码找回</h3>
           </div>
-
           <el-form-item prop="id">
             <span class="svg-container">
               <svg-icon icon-class="user" />
