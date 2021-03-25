@@ -77,15 +77,8 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button :disabled="saveBtnDisabled" type="primary" @click="toUpdate"
+        <el-button :disabled="saveBtnDisabled" v-if="isUpdateInformation == true" type="primary" @click="toUpdate"
           >修改个人信息</el-button
-        >
-        <el-button
-          :disabled="saveBtnDisabled"
-          v-if="isUpdateInformation == false"
-          type="primary"
-          @click="startUpdate"
-          >保存</el-button
         >
         <el-button
           :disabled="saveBtnDisabled"
@@ -93,6 +86,13 @@
           type="warning"
           @click="channelUpdate"
           >取消</el-button
+        >
+        <el-button
+          :disabled="saveBtnDisabled"
+          v-if="isUpdateInformation == false"
+          type="warning"
+          @click="startUpdate"
+          >保存</el-button
         >
       </el-form-item>
     </el-form>
@@ -191,7 +191,7 @@ export default {
     cropSuccess(data) {
       this.imagecropperShow = false;
       //上传之后接口返回图片地址
-      this.user.userAvatar = data;
+      this.sysUser.sysUserAvatar = data;
       this.imagecropperKey = this.imagecropperKey + 1;
     },
     close() {
