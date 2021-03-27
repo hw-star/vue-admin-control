@@ -198,6 +198,7 @@ const createRouter = () => new Router({
   mode: 'history', // require service support
   //history: createWebHistory(process.env.VUE_APP_BASE_API),
   scrollBehavior: () => ({ y: 0 }),
+  base:'/admin/',
   routes: constantRoutes
 })
 
