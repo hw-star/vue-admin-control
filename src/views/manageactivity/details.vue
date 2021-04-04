@@ -149,7 +149,7 @@ export default {
       this.getOrdersInfo();
     },
     getExcel() {
-      window.location.href = "http://127.0.0.1:10010/excel/getexcel/" + this.activity.id
+      window.location.href = "http://39.97.253.156:10010/excel/getexcel/" + this.activity.id
     },
   },
 };
