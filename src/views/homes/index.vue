@@ -70,7 +70,7 @@
                       style="display: inline-block"
                       v-html="'&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;'"
                     ></div>
-                    <div style="display: inline-block">账号：{{item.id}}</div>
+                    <div style="display: inline-block">账号：{{ item.id }}</div>
                     <div>{{ item.url }}</div>
                   </div>
                 </li>
@@ -79,6 +79,8 @@
           </el-card>
         </div>
       </div>
+      <!-- 角色 -->
+      <div class="roleshow">此账号角色：{{ role }}</div>
       <!-- 全屏 -->
       <a class="allscreen" v-if="fullscreen" @click="fullScreen"
         ><i class="iconfont iconquanping"></i
@@ -92,6 +94,7 @@ import { mapGetters } from "vuex";
 import api from "@/api/charts";
 import get from "@/api/logdata";
 import screenfull from "screenfull";
+import store from "@/store";
 export default {
   name: "Home",
   data() {
@@ -101,7 +104,11 @@ export default {
       operationData: [],
       fullscreen: true,
       count: 1,
+      role: "",
     };
+  },
+  created() {
+    this.getRole();
   },
   computed: {
     ...mapGetters(["name", "roles"]),
@@ -203,6 +210,28 @@ export default {
       screenfull.toggle();
       this.fullscreen = false;
     },
+    getRole() {
+      let roleNumber = store.state.user.roles[0];
+      switch (roleNumber) {
+        case "1":
+          this.role = "超级管理员";
+          break;
+        case "2":
+          this.role = "用户管理员";
+          break;
+        case "3":
+          this.role = "活动管理员";
+          break;
+        case "4":
+          this.role = "高级管理员";
+          break;
+        case "5":
+          this.role = "无权限管理员";
+          break;
+        default:
+          this.role = "管理员";
+      }
+    },
   },
 };
 </script>
@@ -274,6 +303,12 @@ export default {
   font-size: 1.6em;
   font-weight: bold;
   color: #4169e1;
+}
+.roleshow {
+  position: absolute;
+  top: 70px;
+  left: 60px;
+  font-weight: bold;
 }
 </style>
 <style lang="scss" scoped>

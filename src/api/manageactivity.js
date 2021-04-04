@@ -54,5 +54,11 @@ export default{
       method: 'get',
     })
   },
+  deleteActivityId(id){
+    return request({
+      url: `/activity/deleteactivity/${id}`,
+      method: 'delete'
+    })
+  }
 
 }
