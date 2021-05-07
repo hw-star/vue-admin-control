@@ -8,11 +8,6 @@ function resolve(dir) {
 
 const name = defaultSettings.title || '青年志愿者服务管理'
 
-// If your port is set to 80,
-// use administrator privileges to execute the command line.
-// For example, Mac: sudo npm run
-// You can change the port by the following methods:
-// port = 9528 npm run dev OR npm run dev --port = 9528
 const port = process.env.port || process.env.npm_config_port || 9528 // dev port
 
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
@@ -20,13 +15,6 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const productionGzipExtensions = ['js', 'css']
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
-  /**
-   * You will need to set publicPath if you plan to deploy your site under a sub path,
-   * for example GitHub Pages. If you plan to deploy your site to https://foo.github.io/bar/,
-   * then publicPath should be set to "/bar/".
-   * In most cases please use '/' !!!
-   * Detail: https://cli.vuejs.org/config/#publicpath
-   */
   publicPath: '/admin/',
   outputDir: 'dist',
   assetsDir: 'static',
@@ -42,8 +30,6 @@ module.exports = {
     // before: require('./mock/mock-server.js') // mock数据
   },
   configureWebpack: {
-    // provide the app's title in webpack's name field, so that
-    // it can be accessed in index.html to inject the correct title.
     name: name,
     resolve: {
       alias: {
@@ -52,14 +38,14 @@ module.exports = {
       }
     },
     plugins: [
-              new CompressionWebpackPlugin({
-                  filename: '[path].gz[query]', // 提示 compression-webpack-plugin@3.0.0的话asset改为filename
-                  algorithm: 'gzip',
-                  test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
-                  threshold: 10240,
-                  minRatio: 0.8
-              })
-          ]
+      new CompressionWebpackPlugin({
+      filename: '[path].gz[query]', // 提示 compression-webpack-plugin@3.0.0的话asset改为filename
+      algorithm: 'gzip',
+      test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+      threshold: 10240,
+      minRatio: 0.8
+      })
+    ]
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
