@@ -258,7 +258,7 @@ export default {
       this.showForFind = false;
       this.FindForm = {};
       this.theSuggestion = true;
-      this.$refs['FindForm'].resetFields()
+      this.$refs["FindForm"].resetFields();
       setTimeout(() => {
         this.show = true;
       }, 500);
@@ -279,7 +279,7 @@ export default {
                     this.FindForm.email
                 ),
               });
-              this.$router.go({ push: "/" });
+              this.toLogin();
             })
             .catch((error) => {});
         } else {
