@@ -294,8 +294,6 @@ export default {
 };
 </script>
 
-<style>
-</style>
 <style lang="scss">
 $bg: rgba(0, 0, 0, 0.6);
 $light_gray: #fff;

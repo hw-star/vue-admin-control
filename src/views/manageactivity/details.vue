@@ -27,7 +27,9 @@
         >查询</el-button
       >
       <el-button type="default" @click="resetData()">清空</el-button>
-      <el-button type="danger" @click="getExcel()">下载志愿者名单</el-button>
+      <el-button type="danger" v-if="existdata" @click="getExcel()"
+        >下载志愿者名单</el-button
+      >
     </el-form>
     <!--数据展示-->
     <el-table
@@ -77,7 +79,6 @@
 
 <script>
 import manageactivity from "@/api/manageactivity";
-import axios from "axios";
 export default {
   data() {
     return {
@@ -98,6 +99,7 @@ export default {
       loading: true,
       id: "",
       applyed: "",
+      existdata: false,
     };
   },
   created() {
@@ -125,6 +127,10 @@ export default {
           this.total = response.data.total;
           this.applyed = response.data.applyed;
           this.loading = false;
+          if (this.total != 0) {
+            // 是否显示下载名单按钮
+            this.existdata = true;
+          }
         });
     },
     handleApply(id) {
@@ -149,7 +155,8 @@ export default {
       this.getOrdersInfo();
     },
     getExcel() {
-      window.location.href = "http://39.97.253.156:10010/excel/getexcel/" + this.activity.id
+      window.location.href =
+        "http://39.97.253.156:10010/excel/getexcel/" + this.activity.id;
     },
   },
 };

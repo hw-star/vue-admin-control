@@ -75,6 +75,31 @@
         >
       </el-form-item>
     </el-form>
+    <div class="excel">
+      <el-upload
+        ref="upload"
+        class="upload-demo"
+        action="http://39.97.253.156:10010/excel/postexcel"
+        :limit="1"
+        :on-exceed="exceedNumber"
+        :auto-upload="false"
+        :drag="true"
+        accept=".xlsx"
+        :on-error="errorpush"
+        :on-success="successpush"
+        :headers="myheaders"
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      </el-upload>
+      <el-button
+        class="btnpush"
+        size="small"
+        type="success"
+        @click="pushExcel"
+        >开始批量上传</el-button
+      >
+    </div>
   </div>
 </template>
 
@@ -97,7 +122,7 @@ export default {
       }
     };
     const validateUserId = (rule, value, callback) => {
-     if (!value) {
+      if (!value) {
         return callback(new Error("账号不能为空"));
       } else {
         if (!validId(value)) {
@@ -154,6 +179,9 @@ export default {
           { required: true, trigger: "blur", validator: validateName },
         ],
       },
+      myheaders:{
+        "X-token": this.$store.getters.token
+      }
     };
   },
   components: { ImageCropper, PanThumb },
@@ -222,6 +250,44 @@ export default {
         }
       });
     },
+    exceedNumber() {
+      const h = this.$createElement;
+      this.$notify({
+        title: "批量上传通知",
+        message: h("i", { style: "color: red" }, "只能添加一个excel文件。"),
+        position: 'bottom-right'
+      });
+    },
+    pushExcel() {
+      this.$refs.upload.submit();
+    },
+    errorpush(){
+      const h = this.$createElement;
+      this.$notify({
+        title: "批量上传通知",
+        message: h("i", { style: "color: red" }, "上传失败。"),
+        position: 'bottom-right'
+      });
+    },
+    successpush(){
+      this.$refs.upload.clearFiles();
+       this.$message({
+          message: '批量导入成功！',
+          type: 'success'
+        });
+    }
   },
 };
 </script>
+<style scoped>
+.app-container .excel {
+  position: absolute;
+  top: 70px;
+  right: 200px;
+}
+.app-container .excel .btnpush{
+  position: absolute;
+  left: 128px;
+  top: 230px;
+}
+</style>>
