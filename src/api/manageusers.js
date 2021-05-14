@@ -34,7 +34,7 @@ export default{
   // 更新某个用户
   updateUser(user){
     return request({
-      url: `/user/updateuser`,
+      url: `/user/sysupdate`,
       method: 'post',
       data: user
     })

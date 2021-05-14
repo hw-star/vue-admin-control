@@ -91,7 +91,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/manageusers/table',
     name: '用户管理',
-    meta: { title: '用户管理', icon: '用户管理', roles: ['1','2','4']},
+    meta: { title: '普通用户管理', icon: '用户管理', roles: ['1','2','4']},
     children: [
       {
         path: 'table',
@@ -121,7 +121,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/manageactivity/table',
     name: '活动管理',
-    meta: { title: '活动管理', icon: '活动管理', roles: ['1','3','4']},
+    meta: { title: '志愿活动管理', icon: '活动管理', roles: ['1','3','4']},
     children: [
       {
         path: 'table',
@@ -159,7 +159,7 @@ export const asyncRoutes = [
     redirect: '/nested/table',
     name: 'Nested',
     meta: {
-      title: '综合管理',
+      title: '管理员管理',
       icon: '综合管理', 
       roles: ['1']
     },

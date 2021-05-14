@@ -191,7 +191,7 @@ export default {
     cropSuccess(data) {
       this.imagecropperShow = false;
       //上传之后接口返回图片地址
-      this.sysUser.sysUserAvatar = data;
+      this.sysUser.sysAvatar = data;
       this.imagecropperKey = this.imagecropperKey + 1;
     },
     close() {
