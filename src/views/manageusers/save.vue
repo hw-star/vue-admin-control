@@ -92,13 +92,15 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       </el-upload>
-      <el-button
-        class="btnpush"
-        size="small"
-        type="success"
-        @click="pushExcel"
+      <el-button class="btnpush" size="small" type="success" @click="pushExcel"
         >开始批量上传</el-button
       >
+      <div class="format">
+        Excel表格 格式 如下图：
+      </div>
+      <div class="formatimg">
+        <img src="../../assets/userhome/formatimg.png" alt="图片示例格式">
+      </div>
     </div>
   </div>
 </template>
@@ -179,9 +181,9 @@ export default {
           { required: true, trigger: "blur", validator: validateName },
         ],
       },
-      myheaders:{
-        "X-token": this.$store.getters.token
-      }
+      myheaders: {
+        "X-token": this.$store.getters.token,
+      },
     };
   },
   components: { ImageCropper, PanThumb },
@@ -255,27 +257,27 @@ export default {
       this.$notify({
         title: "批量上传通知",
         message: h("i", { style: "color: red" }, "只能添加一个excel文件。"),
-        position: 'bottom-right'
+        position: "bottom-right",
       });
     },
     pushExcel() {
       this.$refs.upload.submit();
     },
-    errorpush(){
+    errorpush() {
       const h = this.$createElement;
       this.$notify({
         title: "批量上传通知",
         message: h("i", { style: "color: red" }, "上传失败。"),
-        position: 'bottom-right'
+        position: "bottom-right",
       });
     },
-    successpush(){
+    successpush() {
       this.$refs.upload.clearFiles();
-       this.$message({
-          message: '批量导入成功！',
-          type: 'success'
-        });
-    }
+      this.$message({
+        message: "批量导入成功！",
+        type: "success",
+      });
+    },
   },
 };
 </script>
@@ -285,9 +287,24 @@ export default {
   top: 70px;
   right: 200px;
 }
-.app-container .excel .btnpush{
+.app-container .excel .btnpush {
   position: absolute;
   left: 128px;
   top: 230px;
+}
+.app-container .excel .format{
+  position: absolute;
+  top: 280px;
+  left: 92px;
+}
+.app-container .excel .formatimg{
+  margin-top: 17px;
+  position: absolute;
+  top: 300px;
+  left: 30px;
+}
+.app-container .excel .formatimg img{
+  width: 300px;
+  height: 120px;
 }
 </style>>
