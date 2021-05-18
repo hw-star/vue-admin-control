@@ -24,39 +24,44 @@
       <el-table-column align="center" label="账号" prop="sysId">
       </el-table-column>
       <el-table-column align="center" label="角色">
-        <template slot-scope="scope"> 
-          {{lists[scope.row.sysRoleId - 1]}}
+        <template slot-scope="scope">
+          {{ lists[scope.row.sysRoleId - 1] }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="密码" prop="sysPwd">
       </el-table-column>
       <el-table-column label="禁用以及操作" align="center">
         <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.sysStop"
-            :active-value="1"
-            :inactive-value="0"
-            active-color="#13ce66"
-            @change="sysUserStop(scope.row.id, scope.row.sysStop)"
-          >
-          </el-switch>
-          <el-button
-            style="margin: 0px 4px"
-            size="mini"
-            type="warning"
-            @click="handleDis(scope.row.sysId, scope.row.sysRoleId)"
-            >分配角色</el-button
-          >
-          <router-link :to="'/nested/edit/' + scope.row.id">
-            <el-button style="margin: 0px 4px" size="mini">修改</el-button>
-          </router-link>
-          <el-button
-            style="margin: 0px 4px"
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.row.id)"
-            >删除</el-button
-          >
+          <div v-if="scope.row.sysId == existid ? false : true">
+            <el-switch
+              v-model="scope.row.sysStop"
+              :active-value="1"
+              :inactive-value="0"
+              active-color="#13ce66"
+              @change="sysUserStop(scope.row.id, scope.row.sysStop)"
+            >
+            </el-switch>
+            <el-button
+              style="margin: 0px 4px"
+              size="mini"
+              type="warning"
+              @click="handleDis(scope.row.sysId, scope.row.sysRoleId)"
+              >分配角色</el-button
+            >
+            <router-link :to="'/nested/edit/' + scope.row.id">
+              <el-button style="margin: 0px 4px" size="mini">修改</el-button>
+            </router-link>
+            <el-button
+              style="margin: 0px 4px"
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.row.id)"
+              >删除</el-button
+            >
+          </div>
+          <div v-else>
+            <el-tag type="success">已登录的本人账号</el-tag>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -113,10 +118,12 @@ export default {
         "高级管理员",
         "无权限管理员",
       ],
+      existid: this.$store.state.user.sysid,
     };
   },
   created() {
     this.getlist();
+    console.log(this.$store.state.user.sysid);
   },
   methods: {
     getlist(page = 1) {
@@ -164,14 +171,17 @@ export default {
       this.setid = sysId;
     },
     toAddRole() {
-      apiforrole.updatesysUserRole(this.setid,this.radio).then(response =>{
-        this.$message({
-          type: "success",
-          message: "更改成功!",
-        });
-        this.dialogVisible = false;
-        this.getlist();
-      }).catch(error =>{})
+      apiforrole
+        .updatesysUserRole(this.setid, this.radio)
+        .then((response) => {
+          this.$message({
+            type: "success",
+            message: "更改成功!",
+          });
+          this.dialogVisible = false;
+          this.getlist();
+        })
+        .catch((error) => {});
     },
   },
 };

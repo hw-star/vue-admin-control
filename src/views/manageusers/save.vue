@@ -75,7 +75,7 @@
         >
       </el-form-item>
     </el-form>
-    <div class="excel">
+    <div v-if="!theUpdateSysUserId" class="excel">
       <el-upload
         ref="upload"
         class="upload-demo"
