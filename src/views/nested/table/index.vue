@@ -123,7 +123,6 @@ export default {
   },
   created() {
     this.getlist();
-    console.log(this.$store.state.user.sysid);
   },
   methods: {
     getlist(page = 1) {
