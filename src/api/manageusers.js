@@ -47,5 +47,13 @@ export default{
       method: 'get',
     })
   },
+  // 批量删除活动
+  moreDeleteUsers(ids){
+    return request({
+      url: `/user/moredeleteuser`,
+      method: 'post',
+      data: ids
+    })
+  },
 
 }

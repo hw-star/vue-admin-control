@@ -1,9 +1,12 @@
 <template>
   <div class="app-container">
     <!--查询-->
-   <el-form :inline="true" class="demo-form-inline">
+    <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
-        <el-input v-model="activityBody.fuzzyquery" placeholder="输入关键字搜索"/>
+        <el-input
+          v-model="activityBody.fuzzyquery"
+          placeholder="输入关键字搜索"
+        />
       </el-form-item>
       <el-form-item label="添加更新时间">
         <el-date-picker
@@ -24,54 +27,67 @@
         />
       </el-form-item>
 
-      <el-button type="primary" icon="el-icon-search" @click="getlist()">查询</el-button>
+      <el-button type="primary" icon="el-icon-search" @click="getlist()"
+        >查询</el-button
+      >
       <el-button type="default" @click="resetData()">清空</el-button>
+      <el-button type="danger" @click="moreDeleteData()">批量删除</el-button>
     </el-form>
     <!--数据展示-->
-    <el-table
-      :data="list"
-      v-loading="loading"
-      style="width: 100%; height: 469.6px"
-    >
-      <el-table-column label="序号" width="80" align="center">
-        <template slot-scope="scope">
-          {{ (page - 1) * limit + scope.$index + 1 }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" width="90" label="活动号" prop="id">
-      </el-table-column>
-      <el-table-column align="center" label="名称" prop="actName">
-      </el-table-column>
-      <el-table-column align="center" label="创建时间" prop="actCreate">
-      </el-table-column>
-      <el-table-column align="center" label="更新时间" prop="actUpdate">
-      </el-table-column>
-      <el-table-column label="是否启用以及操作" align="center">
-        <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.actActive"
-            :active-value="1"
-            :inactive-value="0"
-            active-color="#13ce66"
-            @change="activityStop(scope.row.id, scope.row.actActive)"
-          >
-          </el-switch>
-          <router-link :to="'/manageactivity/details/' + scope.row.id">
-            <el-button style="margin: 0px 4px" size="mini">详情</el-button>
-          </router-link>
-          <router-link :to="'/manageactivity/edit/' + scope.row.id">
-            <el-button style="margin: 0px 4px" size="mini">修改</el-button>
-          </router-link>
-          <el-button
-            style="margin: 0px 4px"
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.row.id)"
-            >删除</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-checkbox-group v-model="checkList">
+      <el-table
+        :data="list"
+        v-loading="loading"
+        style="width: 100%; height: 469.6px"
+      >
+        <el-table-column width="30" align="center">
+          <template slot-scope="scope">
+            <el-checkbox :label="`${scope.row.id}`"></el-checkbox>
+          </template>
+        </el-table-column>
+        <el-table-column label="序号" width="80" align="center">
+          <template slot-scope="scope">
+            {{ (page - 1) * limit + scope.$index + 1 }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" width="90" label="活动号" prop="id">
+        </el-table-column>
+        <el-table-column align="center" label="名称" prop="actName">
+        </el-table-column>
+        <el-table-column align="center" label="地点" prop="actAddress">
+        </el-table-column>
+        <el-table-column align="center" label="活动开始日期">
+          <template slot-scope="scope">{{
+            scope.row.actTime.split(" ")[0]
+          }}</template>
+        </el-table-column>
+        <el-table-column label="是否启用以及操作" align="center">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.actActive"
+              :active-value="1"
+              :inactive-value="0"
+              active-color="#13ce66"
+              @change="activityStop(scope.row.id, scope.row.actActive)"
+            >
+            </el-switch>
+            <router-link :to="'/manageactivity/details/' + scope.row.id">
+              <el-button style="margin: 0px 4px" size="mini">详情</el-button>
+            </router-link>
+            <router-link :to="'/manageactivity/edit/' + scope.row.id">
+              <el-button style="margin: 0px 4px" size="mini">修改</el-button>
+            </router-link>
+            <el-button
+              style="margin: 0px 4px"
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.row.id)"
+              >删除</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-checkbox-group>
     <!--分页-->
     <el-footer class="footerPage">
       <el-pagination
@@ -99,6 +115,7 @@ export default {
       total: 0,
       activityBody: {},
       loading: true,
+      checkList: [],
     };
   },
   created() {
@@ -120,20 +137,21 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      }).then(() => {
-        manageactivity.deleteActivityId(id).then((response) => {
-          this.$message({
-            type: "success",
-            message: "删除成功!",
+      })
+        .then(() => {
+          manageactivity.deleteActivityId(id).then((response) => {
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            this.getlist();
           });
-          this.getlist();
-        });
-      }).catch((error) =>{
-        
-      });
+        })
+        .catch((error) => {});
     },
     resetData() {
       this.activityBody = {};
+      this.checkList = [];
       this.getlist();
     },
     activityStop(id, stateCode) {
@@ -143,6 +161,32 @@ export default {
           message: "操作成功!",
         });
       });
+    },
+    moreDeleteData() {
+      if (this.checkList.length == 0) {
+        this.$message({
+          message: "未选中任何数据",
+          type: "warning",
+        });
+      } else {
+        this.$confirm("此操作将删除活动, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+          .then(() => {
+            manageactivity
+              .moreDeleteActivity(this.checkList)
+              .then((response) => {
+                this.$message({
+                  message: "操作成功",
+                  type: "success",
+                });
+              });
+            this.getlist();
+          })
+          .catch((error) => {});
+      }
     },
   },
 };

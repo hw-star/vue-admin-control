@@ -15,6 +15,22 @@
       <el-form-item label="需求人数" prop="actNumber">
         <el-input style="width: 38%" v-model="activity.actNumber" />
       </el-form-item>
+      <el-form-item label="活动地点" prop="actAddress">
+        <el-input style="width: 38%" v-model="activity.actAddress" />
+      </el-form-item>
+      <el-form-item label="开始日期" prop="actTime">
+        <div class="block">
+          <el-date-picker
+            value-format="yyyy-MM-dd"
+            v-model="activity.actTime"
+            align="left"
+            type="date"
+            placeholder="选择日期"
+            :picker-options="pickerOptions"
+          >
+          </el-date-picker>
+        </div>
+      </el-form-item>
       <el-form-item label="活动描述">
         <el-input
           v-model="activity.actDescription"
@@ -66,6 +82,20 @@ export default {
         }
       }
     };
+    const validateAddress = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("地点不能为空"));
+      }else {
+        callback();
+      }
+    };
+    const validateTime = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("开始日期不能为空"));
+      } else {
+        callback();
+      }
+    };
     return {
       activity: {
         id: "",
@@ -82,6 +112,39 @@ export default {
         actName: [{ required: true, trigger: "blur", validator: validateName }],
         actNumber: [
           { required: true, trigger: "blur", validator: validateNumber },
+        ],
+        actAddress: [
+          { required: true, trigger: "blur", validator: validateAddress },
+        ],
+        actTime: [{ required: true, trigger: "blur", validator: validateTime }],
+      },
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [
+          {
+            text: "今天",
+            onClick(picker) {
+              picker.$emit("pick", new Date());
+            },
+          },
+          {
+            text: "昨天",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit("pick", date);
+            },
+          },
+          {
+            text: "一周前",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", date);
+            },
+          },
         ],
       },
     };

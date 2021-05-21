@@ -47,5 +47,13 @@ export default{
       method: 'get',
     })
   },
+  // 批量删除管理员
+  moreDeletesysUsers(ids){
+    return request({
+      url: `/sysuser/moredeletesysuser`,
+      method: 'post',
+      data: ids
+    })
+  },
 
 }

@@ -6,6 +6,10 @@
       <span>需求人数：{{ activity.actNumber }}</span>
       <el-divider direction="vertical"></el-divider>
       <span>已报人数：{{ applyed }}</span>
+      <el-divider direction="vertical"></el-divider>
+      <span>创建时间：{{ activity.actCreate }}</span>
+      <el-divider direction="vertical"></el-divider>
+      <span>更新时间：{{ activity.actUpdate }}</span>
       <el-collapse style="border-top: 0">
         <el-collapse-item title="点击查看   活动描述">
           <div style="font-size: 1.2em; font-weight: bold">

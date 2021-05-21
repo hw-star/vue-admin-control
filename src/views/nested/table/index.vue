@@ -9,62 +9,70 @@
         >查询</el-button
       >
       <el-button type="default" @click="resetData()">清空</el-button>
+      <el-button type="danger" @click="moreDeleteData()">批量删除</el-button>
     </el-form>
     <!--数据展示-->
-    <el-table
-      :data="list"
-      v-loading="loading"
-      style="width: 100%; height: 469.6px"
-    >
-      <el-table-column label="序号" width="70" align="center">
-        <template slot-scope="scope">
-          {{ (page - 1) * limit + scope.$index + 1 }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="账号" prop="sysId">
-      </el-table-column>
-      <el-table-column align="center" label="角色">
-        <template slot-scope="scope">
-          {{ lists[scope.row.sysRoleId - 1] }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="密码" prop="sysPwd">
-      </el-table-column>
-      <el-table-column label="禁用以及操作" align="center">
-        <template slot-scope="scope">
-          <div v-if="scope.row.sysId == existid ? false : true">
-            <el-switch
-              v-model="scope.row.sysStop"
-              :active-value="1"
-              :inactive-value="0"
-              active-color="#13ce66"
-              @change="sysUserStop(scope.row.id, scope.row.sysStop)"
-            >
-            </el-switch>
-            <el-button
-              style="margin: 0px 4px"
-              size="mini"
-              type="warning"
-              @click="handleDis(scope.row.sysId, scope.row.sysRoleId)"
-              >分配角色</el-button
-            >
-            <router-link :to="'/nested/edit/' + scope.row.id">
-              <el-button style="margin: 0px 4px" size="mini">修改</el-button>
-            </router-link>
-            <el-button
-              style="margin: 0px 4px"
-              size="mini"
-              type="danger"
-              @click="handleDelete(scope.row.id)"
-              >删除</el-button
-            >
-          </div>
-          <div v-else>
-            <el-tag type="success">已登录的本人账号</el-tag>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-checkbox-group v-model="checkList">
+      <el-table
+        :data="list"
+        v-loading="loading"
+        style="width: 100%; height: 469.6px"
+      >
+        <el-table-column width="30" align="center">
+          <template slot-scope="scope">
+            <el-checkbox v-if="scope.row.sysId == existid ? false : true" :label="`${scope.row.id}`"></el-checkbox>
+          </template>
+        </el-table-column>
+        <el-table-column label="序号" width="70" align="center">
+          <template slot-scope="scope">
+            {{ (page - 1) * limit + scope.$index + 1 }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="账号" prop="sysId">
+        </el-table-column>
+        <el-table-column align="center" label="角色">
+          <template slot-scope="scope">
+            {{ lists[scope.row.sysRoleId - 1] }}
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="密码" prop="sysPwd">
+        </el-table-column>
+        <el-table-column label="禁用以及操作" align="center">
+          <template slot-scope="scope">
+            <div v-if="scope.row.sysId == existid ? false : true">
+              <el-switch
+                v-model="scope.row.sysStop"
+                :active-value="1"
+                :inactive-value="0"
+                active-color="#13ce66"
+                @change="sysUserStop(scope.row.id, scope.row.sysStop)"
+              >
+              </el-switch>
+              <el-button
+                style="margin: 0px 4px"
+                size="mini"
+                type="warning"
+                @click="handleDis(scope.row.sysId, scope.row.sysRoleId)"
+                >分配角色</el-button
+              >
+              <router-link :to="'/nested/edit/' + scope.row.id">
+                <el-button style="margin: 0px 4px" size="mini">修改</el-button>
+              </router-link>
+              <el-button
+                style="margin: 0px 4px"
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.row.id)"
+                >删除</el-button
+              >
+            </div>
+            <div v-else>
+              <el-tag type="success">已登录的本人账号</el-tag>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-checkbox-group>
     <el-footer class="footerPage">
       <!--分页-->
       <el-pagination
@@ -119,6 +127,7 @@ export default {
         "无权限管理员",
       ],
       existid: this.$store.state.user.sysid,
+      checkList: [],
     };
   },
   created() {
@@ -154,6 +163,7 @@ export default {
     },
     resetData() {
       this.search = "";
+      this.checkList = [];
       this.getlist();
     },
     sysUserStop(id, stateCode) {
@@ -181,6 +191,32 @@ export default {
           this.getlist();
         })
         .catch((error) => {});
+    },
+    moreDeleteData() {
+      if (this.checkList.length == 0) {
+        this.$message({
+          message: "未选中任何数据",
+          type: "warning",
+        });
+      } else {
+        this.$confirm("此操作将删除活动, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+          .then(() => {
+            api
+              .moreDeletesysUsers(this.checkList)
+              .then((response) => {
+                this.$message({
+                  message: "操作成功",
+                  type: "success",
+                });
+              });
+            this.getlist();
+          })
+          .catch((error) => {});
+      }
     },
   },
 };

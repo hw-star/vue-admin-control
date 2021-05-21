@@ -59,6 +59,14 @@ export default{
       url: `/activity/deleteactivity/${id}`,
       method: 'delete'
     })
-  }
+  },
+  // 批量删除活动
+  moreDeleteActivity(ids){
+    return request({
+      url: `/activity/moredeleteactivity`,
+      method: 'post',
+      data: ids
+    })
+  },
 
 }
