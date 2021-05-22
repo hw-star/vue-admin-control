@@ -54,6 +54,7 @@ export default{
       method: 'get',
     })
   },
+  // 删除某个活动
   deleteActivityId(id){
     return request({
       url: `/activity/deleteactivity/${id}`,

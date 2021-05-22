@@ -189,6 +189,42 @@ export const asyncRoutes = [
       }
     ]
   },
+  // 权限 adminPolicy
+  {
+    path: '/policy',
+    component: Layout,
+    redirect: '/policy/table',
+    name: '政策文件管理',
+    meta: { title: '政策文件管理', icon: '文件管理', roles: ['1','2','4']},
+    children: [
+      {
+        path: 'table',
+        name: '文件列表',
+        component: () => import('@/views/policy/list'),
+        meta: { title: '文件列表', icon: 'policy' }
+      },
+      {
+        path: 'save',
+        name: '添加文件',
+        component: () => import('@/views/policy/save'),
+        meta: { title: '添加文件', icon: '添加文件' }
+      },
+      {
+        path: 'details/:id',
+        name: '文件详情',
+        component: () => import('@/views/policy/details'),
+        meta: { title: '文件详情', noCache: 'true' },
+        hidden: true
+      },
+      {
+        path: 'edit/:id',
+        name: '编辑文件',
+        component: () => import('@/views/policy/save'),
+        meta: { title: '编辑文件', noCache: 'true' },
+        hidden: true
+      }
+    ]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
