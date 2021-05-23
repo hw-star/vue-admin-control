@@ -170,6 +170,7 @@ export default {
               { value: this.data.adminUser, name: "用户管理员" },
               { value: this.data.admin, name: "超级管理员" },
               { value: this.data.adminNull, name: "无权限管理员" },
+              { value: this.data.adminPolicy, name: "文件管理员" },
             ],
           },
         ],
@@ -227,6 +228,9 @@ export default {
           break;
         case "5":
           this.role = "无权限管理员";
+          break;
+        case "6":
+          this.role = "文件管理员";
           break;
         default:
           this.role = "管理员";

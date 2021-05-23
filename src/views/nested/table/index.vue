@@ -95,6 +95,7 @@
           <el-radio-button label="3">活动管理员</el-radio-button>
           <el-radio-button label="4">高级管理员</el-radio-button>
           <el-radio-button label="5">无权限管理员</el-radio-button>
+          <el-radio-button label="6">文件管理员</el-radio-button>
         </el-radio-group>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -125,6 +126,7 @@ export default {
         "活动管理员",
         "高级管理员",
         "无权限管理员",
+        "文件管理员",
       ],
       existid: this.$store.state.user.sysid,
       checkList: [],
