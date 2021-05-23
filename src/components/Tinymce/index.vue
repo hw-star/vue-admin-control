@@ -99,11 +99,10 @@ export default {
   data() {
     return {
       editorInit: {
-       
-        language_url: 'tinymce/langs/zh_CN.js',
+        language_url: '../../../admin/tinymce/langs/zh_CN.js',
         language: 'zh_CN',
-        skin_url: 'tinymce/skins/ui/oxide',
-        content_css: 'tinymce/skins/content/default/content.css',
+        skin_url: '../../../public/tinymce/skins/ui/oxide',
+        content_css: '../../../public/tinymce/skins/content/default/content.css',
         height: this.height,
         content_style: '* { padding:0; margin:0; } img {max-width:100% !important }',
         plugin_preview_width: 375, // 预览宽度

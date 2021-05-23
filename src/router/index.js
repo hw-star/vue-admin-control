@@ -78,10 +78,12 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   /**
-   * admin - all
-   * adminUser - user
-   * adminActivity - activity
-   * adminUserActivity - user,activity
+   *  1  超级管理员
+   *  2  用户管理员
+   *  3  活动管理员
+   *  4  高级管理员
+   *  5  无权限管理员
+   *  6  文件管理员
    * 
   */
 
@@ -195,7 +197,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/policy/table',
     name: '政策文件管理',
-    meta: { title: '政策文件管理', icon: '文件管理', roles: ['1','2','4']},
+    meta: { title: '政策文件管理', icon: '文件管理', roles: ['1','4','6']},
     children: [
       {
         path: 'table',

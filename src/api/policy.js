@@ -38,20 +38,20 @@ export default{
       data: ids
     })
   },
-   // 更新某个文件  未实现！！！！！！！！！！！！！
-   updateActivity(activity){
+   // 更新某个文件
+   updatePolicy(policy){
     return request({
-      url: `/activity/updateactivity`,
+      url: `/policy/updatepolicy`,
       method: 'post',
-      data: activity
+      data: policy
     })
   },
-  // 添加某个文件   未实现！！！！！！！！！！！！！
-  addActivity(activity){
+  // 添加某个文件
+  addPolicy(policy){
     return request({
-      url: `/activity/saveActivity/`,
+      url: `/policy/savepolicy`,
       method: 'post',
-      data: activity
+      data: policy
     })
   },
 }

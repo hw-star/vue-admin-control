@@ -52,7 +52,7 @@
             <router-link :to="'/policy/details/' + scope.row.id">
               <el-button style="margin: 0px 4px" size="mini">详情</el-button>
             </router-link>
-            <router-link :to="'/manageactivity/edit/' + scope.row.id">
+            <router-link :to="'/policy/edit/' + scope.row.id">
               <el-button style="margin: 0px 4px" size="mini">修改</el-button>
             </router-link>
             <el-button
