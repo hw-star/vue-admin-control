@@ -246,7 +246,7 @@ export default {
   top: 112px;
 }
 .activity ul li {
-  margin: 12px 6px;
+  margin: 2px 6px;
   padding: 4px 4px;
   font-weight: bold;
   list-style: none;
@@ -265,11 +265,11 @@ export default {
 }
 .activity .set_operation_text {
   font-size: 14px;
-  margin-top: -10px;
+  margin-top: 10px;
   color: rgba(102, 204, 102, 0.8);
 }
 .activity .set_operation_text ul li {
-  margin-bottom: 26px;
+  margin-bottom: 34px;
 }
 .activity .setleft ul li {
   list-style: none;
@@ -299,9 +299,7 @@ export default {
 .activity .window {
   margin-top: 30px;
 }
-.activity .window .setleft {
-  margin-left: -50px;
-}
+
 .allscreen i {
   margin-left: 1210px;
   font-size: 1.6em;
