@@ -123,7 +123,6 @@ export default {
       }
     },
     submitContent() {
-      console.log(this.policy.poTitle+"  "+this.policy.poContent+"   "+ this.policy.poSource);
       if (this.policy.poContent == null) {
         this.$message({
           message: "内容不能为空",

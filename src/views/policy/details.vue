@@ -3,7 +3,7 @@
     <el-backtop></el-backtop>
     <div id="data_list" loading>
       <h2>{{ this.policy.poTitle }}</h2>
-      <div class="policy_content"><span v-html="this.policy.poContent"></span></div>
+      <div class="policy_content"><div v-html="this.policy.poContent"></div></div>
     </div>
   </div>
 </template>
