@@ -141,28 +141,30 @@ export default {
       });
     },
     moreDeleteData() {
-      if (this.checkList.length == 0) {
-        this.$message({
-          message: "未选中任何数据",
-          type: "warning",
-        });
-      } else {
-        this.$confirm("此操作将删除文件, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        })
-          .then(() => {
-            policyApi.moreDeletePolicy(this.checkList).then((response) => {
-              this.$message({
-                message: "操作成功",
-                type: "success",
-              });
-            });
-            this.getlist();
+      this.$nextTick(() => {
+        if (this.checkList.length == 0) {
+          this.$message({
+            message: "未选中任何数据",
+            type: "warning",
+          });
+        } else {
+          this.$confirm("此操作将删除文件, 是否继续?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
           })
-          .catch((error) => {});
-      }
+            .then(() => {
+              policyApi.moreDeletePolicy(this.checkList).then((response) => {
+                this.$message({
+                  message: "操作成功",
+                  type: "success",
+                });
+              });
+              this.getlist();
+            })
+            .catch((error) => {});
+        }
+      });
     },
   },
 };
