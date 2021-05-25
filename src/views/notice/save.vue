@@ -5,27 +5,18 @@
       <ul>
         <li>
           <el-input
-            style="width: 420px"
+            style="width: 640px"
             placeholder="请输入内容"
-            v-model="policy.poTitle"
+            v-model="notice.noTitle"
           >
-            <template slot="prepend">政策文件标题</template>
-          </el-input>
-        </li>
-        <li>
-          <el-input
-            style="width: 220px"
-            placeholder="请输入内容"
-            v-model="policy.poSource"
-          >
-            <template slot="prepend">来源</template>
+            <template slot="prepend">通知公告标题</template>
           </el-input>
         </li>
         <li>
           <div class="block" style="display: inline-block">
             <el-date-picker
               value-format="yyyy-MM-dd"
-              v-model="policy.poTime"
+              v-model="notice.noTime"
               align="left"
               type="date"
               placeholder="选择时间"
@@ -44,7 +35,7 @@
     <tinymce
       id="editor"
       ref="editor"
-      v-model="policy.poContent"
+      v-model="notice.noContent"
       :height="realHeight"
       @handleImgUpload="imgUpload"
     ></tinymce>
@@ -54,11 +45,11 @@
 <script>
 import Tinymce from "@/components/Tinymce";
 import { uploadFile } from "@/api/policyimg";
-import policyApi from "@/api/policy";
+import noticeApi from "@/api/notice";
 export default {
   data() {
     return {
-      policy: {},
+      notice: {},
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now();
@@ -106,9 +97,7 @@ export default {
   created() {
     if (this.$route.params && this.$route.params.id) {
       this.getData(this.$route.params.id);
-      // this.theUpdateActivityId = true;
-    } else {
-      this.policy = {};
+      this.notice = {};
     }
   },
   methods: {
@@ -123,51 +112,44 @@ export default {
       }
     },
     submitContent() {
-      if (this.policy.poContent == null) {
+      if (this.notice.noContent == null) {
         this.$message({
           message: "内容不能为空",
           type: "warning",
         });
         return;
       }
-      if (this.policy.poTitle == null) {
+      if (this.notice.noTitle == null) {
         this.$message({
           message: "标题不能为空",
           type: "warning",
         });
         return;
       }
-      if (this.policy.poTime == null) {
+      if (this.notice.noTime == null) {
         this.$message({
           message: "时间不能为空",
           type: "warning",
         });
         return;
       }
-      if (this.policy.poSource == null) {
-        this.$message({
-          message: "来源不能为空",
-          type: "warning",
-        });
-        return;
-      }
-      policyApi
-        .addPolicy(this.policy)
+      noticeApi
+        .addNotice(this.notice)
         .then((response) => {
           this.$message({
             type: "success",
             message: "添加成功!",
           });
-          // 路由跳转w文件列表
-          this.$router.push({ path: "/policy/table" });
+          // 路由跳转通知公告列表
+          this.$router.push({ path: "/notice/table" });
         })
         .catch((error) => {});
     },
     getData(id) {
-      policyApi
-        .getOnePolicy(id)
+      noticeApi
+        .getOneNotice(id)
         .then((response) => {
-          this.policy = response.data;
+          this.notice = response.data;
           this.loading = false;
         })
         .catch((error) => {});
@@ -180,48 +162,40 @@ export default {
       }
     },
     clearData() {
-      this.policy.poTitle = "";
-      this.policy.poTime = "";
-      this.policy.poSource = "";
+      this.notice.noTitle = "";
+      this.notice.noTime = "";
     },
     updateContent() {
-      if (this.policy.poContent == "") {
+      if (this.notice.noContent == "") {
         this.$message({
           message: "内容不能为空",
           type: "warning",
         });
         return;
       }
-      if (this.policy.poTitle == "") {
+      if (this.notice.noTitle == "") {
         this.$message({
           message: "标题不能为空",
           type: "warning",
         });
         return;
       }
-      if (this.policy.poTime == "") {
+      if (this.notice.noTime == "") {
         this.$message({
           message: "时间不能为空",
           type: "warning",
         });
         return;
       }
-      if (this.policy.poSource == "") {
-        this.$message({
-          message: "来源不能为空",
-          type: "warning",
-        });
-        return;
-      }
-      policyApi
-        .updatePolicy(this.policy)
+      noticeApi
+        .updateNotice(this.notice)
         .then((response) => {
           this.$message({
             type: "success",
             message: "修改成功!",
           });
           // 路由跳转w文件列表
-          this.$router.push({ path: "/policy/table" });
+          this.$router.push({ path: "/notice/table" });
         })
         .catch((error) => {});
     },

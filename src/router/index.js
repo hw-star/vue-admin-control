@@ -69,6 +69,71 @@ export const constantRoutes = [
 
     ]
   },
+  // 通知公告 notice
+  {
+    path: '/notice',
+    component: Layout,
+    redirect: '/notice/table',
+    name: '通知公告管理',
+    meta: { title: '通知公告管理', icon: '通知公告'},
+    children: [
+      {
+        path: 'table',
+        name: '公告列表',
+        component: () => import('@/views/notice/list'),
+        meta: { title: '公告列表', icon: '通知公告列表' }
+      },
+      {
+        path: 'save',
+        name: '添加公告',
+        component: () => import('@/views/notice/save'),
+        meta: { title: '添加公告', icon: '添加文件' }
+      },
+      {
+        path: 'details/:id',
+        name: '公告详情',
+        component: () => import('@/views/notice/details'),
+        meta: { title: '公告详情', noCache: 'true' },
+        hidden: true
+      },
+      {
+        path: 'edit/:id',
+        name: '编辑公告',
+        component: () => import('@/views/notice/save'),
+        meta: { title: '编辑公告', noCache: 'true' },
+        hidden: true
+      }
+    ]
+  },
+  // 志愿风采 elegant
+  {
+    path: '/elegant',
+    component: Layout,
+    redirect: '/elegant/table',
+    name: '志愿风采管理',
+    meta: { title: '志愿风采管理', icon: '通知公告'},
+    children: [
+      {
+        path: 'table',
+        name: '风采列表',
+        component: () => import('@/views/elegant/list'),
+        meta: { title: '优秀志愿者列表', icon: '通知公告列表' }
+      },
+      {
+        path: 'save',
+        name: '添加风采',
+        component: () => import('@/views/elegant/save'),
+        meta: { title: '添加优秀志愿者', icon: '添加文件' }
+      },
+      {
+        path: 'edit/:id',
+        name: '编辑风采',
+        component: () => import('@/views/elegant/save'),
+        meta: { title: '编辑优秀志愿者', noCache: 'true' },
+        hidden: true
+      }
+    ]
+  },
 
 ]
 
