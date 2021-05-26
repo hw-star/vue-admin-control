@@ -1,36 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import { createWebHistory } from 'vue-router'
 
 Vue.use(Router)
 
-/* Layout */
 import Layout from '@/layout'
 
-/**
- * Note: sub-menu only appear when route children.length >= 1
- * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
- *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
- *                                if not set alwaysShow, when item has more than one children route,
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
- * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
-  }
- */
 
-/**
- * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
- */
 export const constantRoutes = [
 
   // 登录
@@ -69,7 +44,8 @@ export const constantRoutes = [
 
     ]
   },
-  // 通知公告 notice
+
+  // 通知公告
   {
     path: '/notice',
     component: Layout,
@@ -105,7 +81,8 @@ export const constantRoutes = [
       }
     ]
   },
-  // 志愿风采 elegant
+
+  // 志愿风采
   {
     path: '/elegant',
     component: Layout,
@@ -137,10 +114,6 @@ export const constantRoutes = [
 
 ]
 
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
 export const asyncRoutes = [
   /**
    *  1  超级管理员
@@ -149,10 +122,9 @@ export const asyncRoutes = [
    *  4  高级管理员
    *  5  无权限管理员
    *  6  文件管理员
-   * 
   */
 
-  // 用户管理 admin,adminUser,adminUserActivity
+  // 普通用户管理
   {
     path: '/manageusers',
     component: Layout,
@@ -182,7 +154,7 @@ export const asyncRoutes = [
     ]
   },
 
-  // 活动管理 admin,adminActivity,adminUserActivity
+  // 志愿活动管理
   {
     path: '/manageactivity',
     component: Layout,
@@ -219,7 +191,7 @@ export const asyncRoutes = [
     ]
   },
 
-  // 权限 admin
+  // 管理员管理
   {
     path: '/nested',
     component: Layout,
@@ -256,7 +228,8 @@ export const asyncRoutes = [
       }
     ]
   },
-  // 权限 adminPolicy
+
+  // 政策文件管理
   {
     path: '/policy',
     component: Layout,
@@ -293,13 +266,12 @@ export const asyncRoutes = [
     ]
   },
 
-  // 404 page must be placed at the end !!!
+  // 404
   { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
-  mode: 'history', // require service support
-  //history: createWebHistory(process.env.VUE_APP_BASE_API),
+  mode: 'history',
   scrollBehavior: () => ({ y: 0 }),
   base:'/admin/',
   routes: constantRoutes
@@ -307,10 +279,9 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
+  router.matcher = newRouter.matcher
 }
 
 export default router
