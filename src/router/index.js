@@ -187,6 +187,13 @@ export const asyncRoutes = [
         component: () => import('@/views/manageactivity/save'),
         meta: { title: '编辑活动', noCache: 'true' },
         hidden: true
+      },
+      {
+        path: 'print',
+        name: '打印活动',
+        component: () => import('@/views/manageactivity/print'),
+        meta: { title: '打印活动', noCache: 'true' },
+        hidden: true
       }
     ]
   },

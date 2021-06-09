@@ -13,6 +13,8 @@ import router from './router'
 import * as echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 
+import Print from 'vue-print-nb'
+Vue.use(Print); 
 
 import '@/icons' // icon
 import '@/permission'

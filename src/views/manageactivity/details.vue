@@ -34,6 +34,9 @@
       <el-button type="danger" v-if="existdata" @click="getExcel()"
         >下载志愿者名单</el-button
       >
+      <el-button @click="changeContent" v-if="existdata" type="danger"
+        >打印名单</el-button
+      >
     </el-form>
     <!--数据展示-->
     <el-table
@@ -162,6 +165,28 @@ export default {
       window.location.href =
         "http://39.97.253.156:10010/excel/getexcel/" + this.activity.id;
     },
+    changeContent() {
+       let detailPage = this.$router.resolve({
+        path: "/manageactivity/print",
+        query: {
+          id: this.activity.id,
+          name: this.activity.actName,
+        },
+      });
+      window.open(detailPage.href, "_blank");
+    },
   },
 };
 </script>
+<style scoped>
+@media print {
+  html,
+  body {
+    width: 1175px;
+    height: inherit;
+  }
+}
+@page {
+  margin: 20mm 10mm;
+}
+</style>
