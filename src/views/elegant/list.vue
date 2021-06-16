@@ -47,11 +47,11 @@
         <el-table-column label="是否显示以及操作" align="center">
           <template slot-scope="scope">
             <el-switch
-              v-model="scope.row.noActive"
+              v-model="scope.row.elActive"
               :active-value="1"
               :inactive-value="0"
               active-color="#13ce66"
-              @change="elegantShow(scope.row.id, scope.row.noActive)"
+              @change="elegantShow(scope.row.id, scope.row.elActive)"
             >
             </el-switch>
             <router-link :to="'/elegant/edit/' + scope.row.id">
